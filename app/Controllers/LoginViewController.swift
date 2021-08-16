@@ -7,9 +7,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
-    @IBOutlet var loginLabel: UILabel!
-    @IBOutlet var passwordLabel: UILabel!
+class LoginViewController: UIViewController {
     @IBOutlet var loginField: UITextField!
     @IBOutlet var passwordField: UITextField!
 
@@ -39,9 +37,6 @@ class ViewController: UIViewController {
     private func showAlert(type: AlertType) {
         switch type {
         case .error:
-            loginLabel.textColor = .red
-            passwordLabel.textColor = .red
-
             loginField.layer.borderWidth = 1
             loginField.layer.borderColor = UIColor.red.cgColor
 
@@ -49,9 +44,6 @@ class ViewController: UIViewController {
             passwordField.layer.borderColor = UIColor.red.cgColor
 
         case .success:
-            loginLabel.textColor = .green
-            passwordLabel.textColor = .green
-
             loginField.layer.borderWidth = 1
             loginField.layer.borderColor = UIColor.green.cgColor
 
