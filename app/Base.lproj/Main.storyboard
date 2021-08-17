@@ -78,6 +78,7 @@
                     <connections>
                         <outlet property="loginField" destination="xl2-rE-jT4" id="zYG-zr-EmH"/>
                         <outlet property="passwordField" destination="9mi-Nt-tD2" id="fd4-6U-jVJ"/>
+                        <outlet property="scrollView" destination="yKU-1P-JBJ" id="i0l-fq-yED"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hIJ-Y1-uKb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
