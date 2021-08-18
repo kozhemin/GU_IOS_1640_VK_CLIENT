@@ -47,7 +47,7 @@ class LoginViewController: UIViewController {
     @IBAction func login(_: Any) {
         if isValid() {
             showAlert(type: .success)
-            print("Успешная авторизация!")
+            performSegue(withIdentifier: "LoginSegue", sender: nil)
         } else {
             showAlert(type: .error)
         }
