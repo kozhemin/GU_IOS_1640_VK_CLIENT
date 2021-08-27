@@ -27,14 +27,21 @@ extension FriendTableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        var cell: UITableViewCell
-        if let reuseCell = tableView.dequeueReusableCell(withIdentifier: "GroupCell") {
-            cell = reuseCell
-        } else {
-            cell = UITableViewCell(style: .default, reuseIdentifier: "GroupCell")
+        var cell: FriendTableViewCell
+        if let resCell = tableView.dequeueReusableCell(withIdentifier: "FriendCell", for: indexPath) as? FriendTableViewCell {
+            cell = resCell
+        }else{
+             cell = tableView.dequeueReusableCell(withIdentifier: "FriendCell", for: indexPath) as! FriendTableViewCell
         }
-
-        configGroupCell(cell: &cell, for: indexPath, item: friend)
+        cell.labelName?.text = friend[indexPath.row].name
+        cell.labelDescription?.text = friend[indexPath.row].description
+        
+        // add shadow to image container
+        cell.contentImage.addShadow()
+        
+        // clip image
+        cell.avatarImage.clip(borderColor: UIColor.orange.cgColor)
+        cell.avatarImage.image = friend[indexPath.row].image
         return cell
     }
 
