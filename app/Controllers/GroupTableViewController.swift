@@ -8,19 +8,33 @@
 import UIKit
 
 class GroupTableViewController: UITableViewController {
+    private var group = [DefaultTableDataProtocol]()
+    @IBOutlet var GroupTableView: UITableView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        loadData()
     }
 
-    // MARK: - Table view data source
+    public func loadData() {
+        group = testGroupData.filter { $0.isMain == true }
+    }
+}
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return 0
+extension GroupTableViewController {
+    override func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
+        return group.count
     }
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 0
-    }
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        var cell: UITableViewCell
+        if let reuseCell = tableView.dequeueReusableCell(withIdentifier: "GroupCell") {
+            cell = reuseCell
+        } else {
+            cell = UITableViewCell(style: .default, reuseIdentifier: "GroupCell")
+        }
 
+        configGroupCell(cell: &cell, for: indexPath, item: group)
+        return cell
+    }
 }
