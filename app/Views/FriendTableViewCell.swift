@@ -12,7 +12,7 @@ class FriendTableViewCell: UITableViewCell {
     @IBOutlet var labelName: UILabel!
     @IBOutlet var labelDescription: UILabel!
     @IBOutlet var contentImage: UIView!
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -23,5 +23,4 @@ class FriendTableViewCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
-
 }

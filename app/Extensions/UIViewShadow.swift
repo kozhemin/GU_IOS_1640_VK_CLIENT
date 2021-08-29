@@ -10,10 +10,10 @@ import UIKit
 extension UIView {
     func addShadow(
         cornerRadius: CGFloat = 50.0,
-        shadowColor: CGColor = UIColor.gray.cgColor,
+        shadowColor: CGColor = UIColor.lightGray.cgColor,
         shadowRadius: CGFloat = 5.0,
-        shadowOpacity: Float = 0.8
-    ) -> Void {
+        shadowOpacity: Float = 0.6
+    ) {
         let layer = self.layer
         layer.cornerRadius = cornerRadius
         layer.shadowColor = shadowColor

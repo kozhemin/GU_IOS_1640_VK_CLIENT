@@ -8,14 +8,14 @@
 import UIKit
 
 extension UIView {
-    
     func clip(
         cornerRadius: CGFloat = 50.0,
         borderWidth: CGFloat = 1.0,
-        borderColor: CGColor = UIColor.lightGray.cgColor) -> Void {
-        let layer = self.layer        
+        borderColor: CGColor = UIColor.lightGray.cgColor
+    ) {
+        let layer = self.layer
         layer.cornerRadius = cornerRadius
-        self.clipsToBounds = true
+        clipsToBounds = true
         layer.borderWidth = borderWidth
         layer.borderColor = borderColor
     }

@@ -55,4 +55,29 @@ var testFriendData: [Friend] = [
         image: UIImage(named: "friend-4"),
         description: ""
     ),
+    Friend(
+        name: "Александр Александрович",
+        image: UIImage(named: "friend-default"),
+        description: ""
+    ),
+    Friend(
+        name: "Константин Константинович",
+        image: UIImage(named: "friend-default"),
+        description: ""
+    ),
+    Friend(
+        name: "Тимофей Тимофеевич",
+        image: UIImage(named: "friend-default"),
+        description: ""
+    ),
+    Friend(
+        name: "Никадим Никадимович",
+        image: UIImage(named: "friend-default"),
+        description: ""
+    ),
+    Friend(
+        name: "Андрей Александрович",
+        image: UIImage(named: "friend-default"),
+        description: ""
+    ),
 ]
