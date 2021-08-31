@@ -13,6 +13,15 @@ struct Group: DefaultTableDataProtocol {
     var isMain: Bool
 }
 
+extension Array where Element == Group {
+    mutating func changeAttrIsMainByName(groupName: String, direction: Bool) -> Void {
+        guard let index = self.firstIndex(where: {$0.name == groupName }) else {
+            return
+        }
+        self[index].isMain = direction
+    }
+}
+
 var testGroupData: [Group] = [
     Group(
         name: "Группа1",
