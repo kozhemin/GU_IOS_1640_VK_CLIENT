@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="T66-FK-Hlu">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="wvB-Xt-8Ae">
     <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
@@ -125,9 +125,11 @@
                     </navigationItem>
                     <connections>
                         <outlet property="GroupSearchTableView" destination="tEz-sj-Q6x" id="jL7-4v-TA0"/>
+                        <segue destination="r8s-ls-wkr" kind="unwind" identifier="addGroupSegue" unwindAction="addGroupWithSegue:" id="pTU-aC-UaJ"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="llH-3I-wvx" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <exit id="r8s-ls-wkr" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="4105" y="368"/>
         </scene>
@@ -313,9 +315,40 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <view key="tableHeaderView" contentMode="scaleToFill" id="WBn-zl-GfL" userLabel="HeaderView" customClass="GroupTableHeader" customModule="app" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ZMA-4H-HBu">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="100" id="Kxg-PX-uVM"/>
+                                    </constraints>
+                                </imageView>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HEz-7H-MRS" userLabel="LabelCountGroup">
+                                    <rect key="frame" x="318" y="68" width="47" height="22"/>
+                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            <constraints>
+                                <constraint firstItem="ZMA-4H-HBu" firstAttribute="leading" secondItem="WBn-zl-GfL" secondAttribute="leading" id="0BW-2B-emo"/>
+                                <constraint firstAttribute="trailing" secondItem="HEz-7H-MRS" secondAttribute="trailing" constant="10" id="0Hi-qr-dkb"/>
+                                <constraint firstAttribute="bottom" secondItem="HEz-7H-MRS" secondAttribute="bottom" constant="10" id="MwW-4v-Ml6"/>
+                                <constraint firstItem="ZMA-4H-HBu" firstAttribute="top" secondItem="WBn-zl-GfL" secondAttribute="top" id="ncE-uY-g7m"/>
+                                <constraint firstAttribute="bottom" secondItem="ZMA-4H-HBu" secondAttribute="bottom" id="sDV-Gn-Wex"/>
+                                <constraint firstAttribute="trailing" secondItem="ZMA-4H-HBu" secondAttribute="trailing" id="vX7-bZ-BOM"/>
+                            </constraints>
+                            <connections>
+                                <outlet property="imageView" destination="ZMA-4H-HBu" id="MDI-qa-OaX"/>
+                                <outlet property="labelCountGroup" destination="HEz-7H-MRS" id="8Zv-Nv-7SC"/>
+                            </connections>
+                        </view>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="GroupCell" id="K11-GT-b0A">
-                                <rect key="frame" x="0.0" y="24.333333969116211" width="375" height="70"/>
+                                <rect key="frame" x="0.0" y="124.33333396911621" width="375" height="70"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="K11-GT-b0A" id="aaV-W7-AI5">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="70"/>
@@ -338,6 +371,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="GroupTableView" destination="tYi-Qx-ZP5" id="MaG-2b-xDH"/>
+                        <outlet property="tableViewHeader" destination="WBn-zl-GfL" id="09g-bh-uEU"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BS7-t9-VNX" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

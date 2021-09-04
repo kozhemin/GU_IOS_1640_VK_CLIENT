@@ -20,6 +20,13 @@ extension Array where Element == Group {
         }
         self[index].isMain = direction
     }
+    
+    func isMain(groupName: String) -> Bool {
+        guard let index = self.firstIndex(where: {$0.name == groupName }) else {
+            return false
+        }
+        return self[index].isMain
+    }
 }
 
 var testGroupData: [Group] = [

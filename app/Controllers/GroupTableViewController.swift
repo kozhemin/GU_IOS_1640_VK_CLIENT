@@ -8,16 +8,41 @@
 import UIKit
 
 class GroupTableViewController: UITableViewController {
-    private var group = [DefaultTableDataProtocol]()
+    private var group = [DefaultTableDataProtocol](){
+        didSet{
+            setHeaderLabel()
+            tableView.reloadData()
+        }
+    }
     @IBOutlet var GroupTableView: UITableView!
-
+    @IBOutlet var tableViewHeader: GroupTableHeader!
+    
+    @IBAction func addGroup(segue: UIStoryboardSegue) {
+        guard segue.identifier == "addGroupSegue",
+              let vc = segue.source as? GroupSearchTableViewController,
+              let index = vc.tableView.indexPathForSelectedRow?.row
+        else { return }
+        
+        testGroupData.changeAttrIsMainByName(groupName: vc.getGroup()[index].name, direction: true)
+        loadData()
+    }
+    
+    override func viewDidLoad() {
+        // header image
+        tableViewHeader.imageView.image = UIImage(named: "groupHeader")
+        tableViewHeader.imageView.contentMode = .scaleAspectFill
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         loadData()
-        GroupTableView.reloadData()
     }
 
     public func loadData() {
         group = testGroupData.filter { $0.isMain == true }
+    }
+    
+    private func setHeaderLabel() {
+        tableViewHeader.labelCountGroup.text = "Всего групп: \(self.group.count)"
     }
 }
 
@@ -58,7 +83,6 @@ extension GroupTableViewController {
                     handler: { _ in
                         testGroupData.changeAttrIsMainByName(groupName: self.group[indexPath.row].name, direction: false)
                         self.loadData()
-                        tableView.reloadData()
                     }
                 )
             )
