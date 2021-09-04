@@ -8,16 +8,29 @@
 import UIKit
 
 class GroupSearchTableViewController: UITableViewController {
-    private var group = [DefaultTableDataProtocol]()
+    private var group = [DefaultTableDataProtocol](){
+        didSet {
+            GroupSearchTableView.reloadData()
+        }
+    }
+    
     @IBOutlet var GroupSearchTableView: UITableView!
-
+    @IBOutlet var searchField: UISearchBar!
+    
+    override func viewDidLoad() {
+        self.searchField.delegate = self
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
-        group = testGroupData
-        GroupSearchTableView.reloadData()
+        self.loadData()
     }
     
     func getGroup() -> [DefaultTableDataProtocol] {
         return self.group
+    }
+    
+    func loadData() {
+        group = testGroupData
     }
 }
 
@@ -89,5 +102,17 @@ extension GroupSearchTableViewController {
         actionCustomBtn.backgroundColor = .blue
         actionCustomBtn.image = UIImage(systemName: "person.fill.checkmark")
         return UISwipeActionsConfiguration(actions: [actionCustomBtn])
+    }
+}
+
+extension GroupSearchTableViewController: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchText.isEmpty {
+            return self.loadData()
+        }
+        
+        self.group = testGroupData.filter {
+            $0.name.lowercased().contains(searchText.lowercased())
+        }
     }
 }
