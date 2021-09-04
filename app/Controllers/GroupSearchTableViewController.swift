@@ -11,9 +11,9 @@ class GroupSearchTableViewController: UITableViewController {
     private var group = [DefaultTableDataProtocol]()
     @IBOutlet var GroupSearchTableView: UITableView!
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func viewWillAppear(_ animated: Bool) {
         loadData()
+        GroupSearchTableView.reloadData()
     }
 
     public func loadData() {
@@ -36,5 +36,19 @@ extension GroupSearchTableViewController {
 
         configGroupCell(cell: &cell, for: indexPath, item: group)
         return cell
+    }
+}
+
+extension GroupSearchTableViewController {
+    override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        
+        let actionCustomBtn = UIContextualAction(style: .normal, title: ""){_,_,_ in
+            testGroupData.changeAttrIsMainByName(groupName: self.group[indexPath.row].name, direction: true)
+            self.loadData()
+            self.GroupSearchTableView.reloadData()
+        }
+        actionCustomBtn.backgroundColor = .blue
+        actionCustomBtn.image = UIImage(systemName: "person.fill.checkmark")
+        return UISwipeActionsConfiguration(actions: [actionCustomBtn])
     }
 }
