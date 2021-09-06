@@ -8,27 +8,27 @@
 import UIKit
 
 class GroupSearchTableViewController: UITableViewController {
-    private var group = [DefaultTableDataProtocol](){
+    private var group = [DefaultTableDataProtocol]() {
         didSet {
             GroupSearchTableView.reloadData()
         }
     }
-    
+
     @IBOutlet var GroupSearchTableView: UITableView!
     @IBOutlet var searchField: UISearchBar!
-    
+
     override func viewDidLoad() {
-        self.searchField.delegate = self
+        searchField.delegate = self
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        self.loadData()
+
+    override func viewWillAppear(_: Bool) {
+        loadData()
     }
-    
+
     func getGroup() -> [DefaultTableDataProtocol] {
-        return self.group
+        return group
     }
-    
+
     func loadData() {
         group = testGroupData.filter { $0.isMain == false }
     }
@@ -53,17 +53,14 @@ extension GroupSearchTableViewController {
 }
 
 extension GroupSearchTableViewController {
-    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        if !testGroupData.isMain(groupName: self.group[indexPath.row].name) {
-            
+        if !testGroupData.isMain(groupName: group[indexPath.row].name) {
             let alert = UIAlertController(
                 title: "Confirm",
                 message: "Are you sure you want to add a group ?",
                 preferredStyle: .actionSheet
             )
-            
+
             alert.addAction(
                 UIAlertAction(
                     title: NSLocalizedString("OK", comment: "Default action"),
@@ -73,7 +70,7 @@ extension GroupSearchTableViewController {
                     }
                 )
             )
-            
+
             alert.addAction(
                 UIAlertAction(
                     title: "Cancel",
@@ -81,21 +78,21 @@ extension GroupSearchTableViewController {
                     handler: nil
                 )
             )
-            
-            self.present(alert, animated: true, completion: nil)
-            
+
+            present(alert, animated: true, completion: nil)
+
         } else {
             tableView.deselectRow(at: indexPath, animated: true)
         }
     }
-    
-    override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+
+    override func tableView(_: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         // запрет добавления группы если такая уже добавлена
-        if testGroupData.isMain(groupName: self.group[indexPath.row].name) {
+        if testGroupData.isMain(groupName: group[indexPath.row].name) {
             return nil
         }
-        
-        let actionCustomBtn = UIContextualAction(style: .normal, title: ""){_,_,complete in
+
+        let actionCustomBtn = UIContextualAction(style: .normal, title: "") { _, _, complete in
             testGroupData.changeAttrIsMainByName(groupName: self.group[indexPath.row].name, direction: true)
             complete(true)
             self.loadData()
@@ -107,12 +104,12 @@ extension GroupSearchTableViewController {
 }
 
 extension GroupSearchTableViewController: UISearchBarDelegate {
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+    func searchBar(_: UISearchBar, textDidChange searchText: String) {
         if searchText.isEmpty {
-            return self.loadData()
+            return loadData()
         }
-        
-        self.group = testGroupData.filter {
+
+        group = testGroupData.filter {
             $0.name.lowercased().contains(searchText.lowercased()) && !$0.isMain
         }
     }

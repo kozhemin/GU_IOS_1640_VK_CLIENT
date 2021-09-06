@@ -8,41 +8,42 @@
 import UIKit
 
 class GroupTableViewController: UITableViewController {
-    private var group = [DefaultTableDataProtocol](){
-        didSet{
+    private var group = [DefaultTableDataProtocol]() {
+        didSet {
             setHeaderLabel()
             tableView.reloadData()
         }
     }
+
     @IBOutlet var GroupTableView: UITableView!
     @IBOutlet var tableViewHeader: GroupTableHeader!
-    
+
     @IBAction func addGroup(segue: UIStoryboardSegue) {
         guard segue.identifier == "addGroupSegue",
               let vc = segue.source as? GroupSearchTableViewController,
               let index = vc.tableView.indexPathForSelectedRow?.row
         else { return }
-        
+
         testGroupData.changeAttrIsMainByName(groupName: vc.getGroup()[index].name, direction: true)
         loadData()
     }
-    
+
     override func viewDidLoad() {
         // header image
         tableViewHeader.imageView.image = UIImage(named: "groupHeader")
         tableViewHeader.imageView.contentMode = .scaleAspectFill
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
+
+    override func viewWillAppear(_: Bool) {
         loadData()
     }
 
     public func loadData() {
         group = testGroupData.filter { $0.isMain == true }
     }
-    
+
     private func setHeaderLabel() {
-        tableViewHeader.labelCountGroup.text = "Всего групп: \(self.group.count)"
+        tableViewHeader.labelCountGroup.text = "Всего групп: \(group.count)"
     }
 }
 
@@ -65,17 +66,15 @@ extension GroupTableViewController {
 }
 
 extension GroupTableViewController {
-    
-    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        
-        let actionDelete = UIContextualAction(style: .destructive, title: "") {_, _, complete in
-            
+    override func tableView(_: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let actionDelete = UIContextualAction(style: .destructive, title: "") { _, _, complete in
+
             let alert = UIAlertController(
                 title: "Confirm",
                 message: "Are you sure you want to leave the group?",
                 preferredStyle: .actionSheet
             )
-            
+
             alert.addAction(
                 UIAlertAction(
                     title: NSLocalizedString("OK", comment: "Default action"),
@@ -86,7 +85,7 @@ extension GroupTableViewController {
                     }
                 )
             )
-            
+
             alert.addAction(
                 UIAlertAction(
                     title: "Cancel",
@@ -94,12 +93,12 @@ extension GroupTableViewController {
                     handler: { [complete] _ in complete(true) }
                 )
             )
-            
+
             self.present(alert, animated: true, completion: nil)
         }
-        
+
         actionDelete.image = UIImage(systemName: "person.fill.xmark")
-       
+
         return UISwipeActionsConfiguration(actions: [actionDelete])
     }
 }

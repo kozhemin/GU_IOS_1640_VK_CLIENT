@@ -11,6 +11,7 @@ class LoginViewController: UIViewController {
     @IBOutlet var loginField: UITextField!
     @IBOutlet var passwordField: UITextField!
     @IBOutlet var scrollView: UIScrollView!
+    @IBOutlet var loadingView: loadingIndicatorView!
 
     enum AlertType {
         case error
@@ -24,6 +25,8 @@ class LoginViewController: UIViewController {
         let hideKeyboardGesture = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         // Присваиваем его UIScrollVIew
         scrollView?.addGestureRecognizer(hideKeyboardGesture)
+        // Запуск анимации индикатора
+        loadingView.indicatorAnimation()
     }
 
     override func viewWillAppear(_ animated: Bool) {
