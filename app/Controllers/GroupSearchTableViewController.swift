@@ -8,16 +8,29 @@
 import UIKit
 
 class GroupSearchTableViewController: UITableViewController {
-    private var group = [DefaultTableDataProtocol]()
-    @IBOutlet var GroupSearchTableView: UITableView!
-
-    override func viewWillAppear(_ animated: Bool) {
-        loadData()
-        GroupSearchTableView.reloadData()
+    private var group = [DefaultTableDataProtocol](){
+        didSet {
+            GroupSearchTableView.reloadData()
+        }
     }
-
-    public func loadData() {
-        group = testGroupData.filter { $0.isMain == false }
+    
+    @IBOutlet var GroupSearchTableView: UITableView!
+    @IBOutlet var searchField: UISearchBar!
+    
+    override func viewDidLoad() {
+        self.searchField.delegate = self
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.loadData()
+    }
+    
+    func getGroup() -> [DefaultTableDataProtocol] {
+        return self.group
+    }
+    
+    func loadData() {
+        group = testGroupData
     }
 }
 
@@ -40,15 +53,66 @@ extension GroupSearchTableViewController {
 }
 
 extension GroupSearchTableViewController {
-    override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        let actionCustomBtn = UIContextualAction(style: .normal, title: ""){_,_,_ in
+        if !testGroupData.isMain(groupName: self.group[indexPath.row].name) {
+            
+            let alert = UIAlertController(
+                title: "Confirm",
+                message: "Are you sure you want to add a group ?",
+                preferredStyle: .actionSheet
+            )
+            
+            alert.addAction(
+                UIAlertAction(
+                    title: NSLocalizedString("OK", comment: "Default action"),
+                    style: .default,
+                    handler: { _ in
+                        self.performSegue(withIdentifier: "addGroupSegue", sender: nil)
+                    }
+                )
+            )
+            
+            alert.addAction(
+                UIAlertAction(
+                    title: "Cancel",
+                    style: .cancel,
+                    handler: nil
+                )
+            )
+            
+            self.present(alert, animated: true, completion: nil)
+            
+        } else {
+            tableView.deselectRow(at: indexPath, animated: true)
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        // запрет добавления группы если такая уже добавлена
+        if testGroupData.isMain(groupName: self.group[indexPath.row].name) {
+            return nil
+        }
+        
+        let actionCustomBtn = UIContextualAction(style: .normal, title: ""){_,_,complete in
             testGroupData.changeAttrIsMainByName(groupName: self.group[indexPath.row].name, direction: true)
-            self.loadData()
-            self.GroupSearchTableView.reloadData()
+            complete(true)
         }
         actionCustomBtn.backgroundColor = .blue
         actionCustomBtn.image = UIImage(systemName: "person.fill.checkmark")
         return UISwipeActionsConfiguration(actions: [actionCustomBtn])
+    }
+}
+
+extension GroupSearchTableViewController: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchText.isEmpty {
+            return self.loadData()
+        }
+        
+        self.group = testGroupData.filter {
+            $0.name.lowercased().contains(searchText.lowercased())
+        }
     }
 }
