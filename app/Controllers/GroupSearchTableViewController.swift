@@ -30,7 +30,7 @@ class GroupSearchTableViewController: UITableViewController {
     }
     
     func loadData() {
-        group = testGroupData
+        group = testGroupData.filter { $0.isMain == false }
     }
 }
 
@@ -98,6 +98,7 @@ extension GroupSearchTableViewController {
         let actionCustomBtn = UIContextualAction(style: .normal, title: ""){_,_,complete in
             testGroupData.changeAttrIsMainByName(groupName: self.group[indexPath.row].name, direction: true)
             complete(true)
+            self.loadData()
         }
         actionCustomBtn.backgroundColor = .blue
         actionCustomBtn.image = UIImage(systemName: "person.fill.checkmark")
@@ -112,7 +113,7 @@ extension GroupSearchTableViewController: UISearchBarDelegate {
         }
         
         self.group = testGroupData.filter {
-            $0.name.lowercased().contains(searchText.lowercased())
+            $0.name.lowercased().contains(searchText.lowercased()) && !$0.isMain
         }
     }
 }
