@@ -8,14 +8,13 @@
 import UIKit
 
 extension UIImageView {
-    
-    func resizeAndSpringAnimate(){
+    func resizeAndSpringAnimate() {
         UIView.animate(
             withDuration: 0.2,
             animations: {
                 self.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
             },
-            completion: {_ in
+            completion: { _ in
                 UIView.animate(
                     withDuration: 1,
                     delay: 0,
@@ -26,6 +25,7 @@ extension UIImageView {
                         self.transform = CGAffineTransform(scaleX: 1, y: 1)
                     }
                 )
-            })
+            }
+        )
     }
 }
