@@ -15,12 +15,16 @@ class FriendTableViewCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(tapAvatarImage(_:)))
+        self.contentImage.addGestureRecognizer(gesture)
     }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
+    
+    @objc func tapAvatarImage(_ gestureRecognizer : UITapGestureRecognizer ) {
+        guard gestureRecognizer.view != nil else { return }
+        
+        if gestureRecognizer.state == .ended {
+            self.avatarImage.resizeAndSpringAnimate()
+        }
     }
 }
