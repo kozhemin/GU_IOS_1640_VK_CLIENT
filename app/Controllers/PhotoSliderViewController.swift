@@ -76,7 +76,18 @@ final class PhotoSliderViewController: UIViewController {
         imageView = UIImageView(frame: sliderArea.bounds)
         imageView?.contentMode = .scaleAspectFill
         imageView?.isUserInteractionEnabled = true
-        sliderArea.addSubview(imageView ?? UIImageView())
+       
+        guard let imageView = imageView
+        else { return }
+        
+        sliderArea.addSubview(imageView)
+
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        let topConstraint = imageView.topAnchor.constraint(equalTo: sliderArea.topAnchor)
+        let leadingConstraint = imageView.leadingAnchor.constraint(equalTo: sliderArea.leadingAnchor)
+        let trailingConstraint = imageView.trailingAnchor.constraint(equalTo: sliderArea.trailingAnchor)
+        let bottomConstraint = imageView.bottomAnchor.constraint(equalTo: sliderArea.bottomAnchor)
+        sliderArea.addConstraints([topConstraint, leadingConstraint, trailingConstraint, bottomConstraint])
     }
     
     private func imageLabelViewConfig() {
@@ -92,8 +103,8 @@ final class PhotoSliderViewController: UIViewController {
         else { return }
         
         NSLayoutConstraint.activate([
-            imageLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            imageLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            imageLabel.leadingAnchor.constraint(equalTo: imageView.leadingAnchor),
+            imageLabel.trailingAnchor.constraint(equalTo: imageView.trailingAnchor),
             imageLabel.heightAnchor.constraint(equalToConstant: 50),
             imageLabel.bottomAnchor.constraint(equalTo: imageView.bottomAnchor)
         ])
