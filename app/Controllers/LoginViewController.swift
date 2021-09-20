@@ -13,6 +13,8 @@ class LoginViewController: UIViewController {
     @IBOutlet var scrollView: UIScrollView!
     @IBOutlet var loadingView: loadingIndicatorView!
 
+    lazy var navigationAnimator = Animator()
+    
     enum AlertType {
         case error
         case success
@@ -20,11 +22,15 @@ class LoginViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        transitioningDelegate = self
+        
         // Жест нажатия
         let hideKeyboardGesture = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
+        
         // Присваиваем его UIScrollVIew
         scrollView?.addGestureRecognizer(hideKeyboardGesture)
+        
         // Запуск анимации индикатора
         loadingView.indicatorAnimation()
     }
@@ -48,7 +54,12 @@ class LoginViewController: UIViewController {
     @IBAction func login(_: Any) {
         if isValid() {
             showAlert(type: .success)
-            performSegue(withIdentifier: "LoginSegue", sender: nil)
+            let navController = UIStoryboard(
+                name: "Main",
+                bundle: nil)
+                .instantiateViewController(withIdentifier: "MainNavController")
+            navController.transitioningDelegate = self
+            present(navController, animated: true)
         } else {
             showAlert(type: .error)
         }
@@ -97,5 +108,20 @@ class LoginViewController: UIViewController {
 
     @objc func hideKeyboard() {
         scrollView?.endEditing(true)
+    }
+}
+
+extension LoginViewController: UIViewControllerTransitioningDelegate {
+    func animationController(
+        forPresented presented: UIViewController,
+        presenting: UIViewController,
+        source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        navigationAnimator.presenting = true
+        return navigationAnimator
+    }
+    
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        navigationAnimator.presenting = false
+        return navigationAnimator
     }
 }
