@@ -14,7 +14,7 @@ class LoginViewController: UIViewController {
     @IBOutlet var loadingView: loadingIndicatorView!
 
     lazy var navigationAnimator = Animator()
-    
+
     enum AlertType {
         case error
         case success
@@ -22,15 +22,15 @@ class LoginViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         transitioningDelegate = self
-        
+
         // Жест нажатия
         let hideKeyboardGesture = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
-        
+
         // Присваиваем его UIScrollVIew
         scrollView?.addGestureRecognizer(hideKeyboardGesture)
-        
+
         // Запуск анимации индикатора
         loadingView.indicatorAnimation()
     }
@@ -56,8 +56,9 @@ class LoginViewController: UIViewController {
             showAlert(type: .success)
             let navController = UIStoryboard(
                 name: "Main",
-                bundle: nil)
-                .instantiateViewController(withIdentifier: "MainNavController")
+                bundle: nil
+            )
+            .instantiateViewController(withIdentifier: "MainNavController")
             navController.transitioningDelegate = self
             present(navController, animated: true)
         } else {
@@ -113,14 +114,15 @@ class LoginViewController: UIViewController {
 
 extension LoginViewController: UIViewControllerTransitioningDelegate {
     func animationController(
-        forPresented presented: UIViewController,
-        presenting: UIViewController,
-        source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        forPresented _: UIViewController,
+        presenting _: UIViewController,
+        source _: UIViewController
+    ) -> UIViewControllerAnimatedTransitioning? {
         navigationAnimator.presenting = true
         return navigationAnimator
     }
-    
-    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+
+    func animationController(forDismissed _: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         navigationAnimator.presenting = false
         return navigationAnimator
     }

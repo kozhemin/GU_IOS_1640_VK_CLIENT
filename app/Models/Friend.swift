@@ -28,8 +28,8 @@ var testFriendData: [Friend] = [
             PhotoGallery(description: "Lorem ipsum...1", image: UIImage(named: "friend-1.1")),
             PhotoGallery(description: "Lorem ipsum...2", image: UIImage(named: "friend-1.2")),
             PhotoGallery(description: "Lorem ipsum...3", image: UIImage(named: "friend-1.3")),
-            PhotoGallery(description: "Lorem ipsum...4", image: UIImage( named: "friend-2.3")),
-            PhotoGallery(description: "Lorem ipsum...5", image: UIImage( named: "friend-2.2")),
+            PhotoGallery(description: "Lorem ipsum...4", image: UIImage(named: "friend-2.3")),
+            PhotoGallery(description: "Lorem ipsum...5", image: UIImage(named: "friend-2.2")),
         ]
     ),
     Friend(

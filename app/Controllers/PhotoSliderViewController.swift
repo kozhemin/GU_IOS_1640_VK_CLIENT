@@ -13,10 +13,9 @@ enum SwipeDirection {
 }
 
 final class PhotoSliderViewController: UIViewController {
-    
     @IBOutlet var sliderArea: UIView!
     @IBOutlet var sliderIndicator: UIStackView!
-    
+
     private var imageView: UIImageView?
     private var propertyAnimator: UIViewPropertyAnimator?
     private var images = [PhotoGallery]()
@@ -27,29 +26,30 @@ final class PhotoSliderViewController: UIViewController {
             changeSliderIndicator()
         }
     }
+
     private var imageLabel: UILabel?
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         // config view
         imageViewConfig()
         imageLabelViewConfig()
         indicatorViewConfig()
-        
+
         let panGR = UIPanGestureRecognizer(
             target: self,
             action: #selector(swipePan(_:))
         )
         imageView?.addGestureRecognizer(panGR)
-        
+
         presentDefaultImage()
     }
 
     func setImages(images: [PhotoGallery], indexAt: Int) {
         self.images = images
-        self.setSliderIndicator()
-        self.currentImageIndex = indexAt
+        setSliderIndicator()
+        currentImageIndex = indexAt
     }
 
     private func setSliderIndicator() {
@@ -60,26 +60,26 @@ final class PhotoSliderViewController: UIViewController {
             indicatorImages.append(indicatorImageView)
         }
     }
-    
+
     private func presentDefaultImage() {
         imageView?.image = images[currentImageIndex].image
         changeImageLabel()
     }
-    
+
     private func indicatorViewConfig() {
         for item in indicatorImages {
             sliderIndicator.addArrangedSubview(item)
         }
     }
-    
+
     private func imageViewConfig() {
         imageView = UIImageView(frame: sliderArea.bounds)
         imageView?.contentMode = .scaleAspectFill
         imageView?.isUserInteractionEnabled = true
-       
+
         guard let imageView = imageView
         else { return }
-        
+
         sliderArea.addSubview(imageView)
 
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -89,7 +89,7 @@ final class PhotoSliderViewController: UIViewController {
         let bottomConstraint = imageView.bottomAnchor.constraint(equalTo: sliderArea.bottomAnchor)
         sliderArea.addConstraints([topConstraint, leadingConstraint, trailingConstraint, bottomConstraint])
     }
-    
+
     private func imageLabelViewConfig() {
         imageLabel = UILabel()
         imageLabel?.adjustsFontSizeToFitWidth = true
@@ -101,15 +101,15 @@ final class PhotoSliderViewController: UIViewController {
         guard let imageLabel = imageLabel,
               let imageView = imageView
         else { return }
-        
+
         NSLayoutConstraint.activate([
             imageLabel.leadingAnchor.constraint(equalTo: imageView.leadingAnchor),
             imageLabel.trailingAnchor.constraint(equalTo: imageView.trailingAnchor),
             imageLabel.heightAnchor.constraint(equalToConstant: 50),
-            imageLabel.bottomAnchor.constraint(equalTo: imageView.bottomAnchor)
+            imageLabel.bottomAnchor.constraint(equalTo: imageView.bottomAnchor),
         ])
     }
-    
+
     private func changeImageLabel() {
         imageLabel?.text = images[currentImageIndex].description
     }
@@ -120,7 +120,7 @@ final class PhotoSliderViewController: UIViewController {
         }
         indicatorImages[currentImageIndex].tintColor = UIColor.red
     }
-    
+
     @objc
     private func swipePan(_ gesture: UIPanGestureRecognizer) {
         let translation = gesture.translation(in: sliderArea)
@@ -175,7 +175,7 @@ final class PhotoSliderViewController: UIViewController {
             // Hide off the screen
             imageView?.center.x += imageDirectionOffest
             sliderArea.addSubview(imageView ?? UIImageView())
-            
+
             UIView.animate(
                 withDuration: 0.6,
                 delay: 0.0,

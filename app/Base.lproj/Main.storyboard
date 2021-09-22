@@ -477,7 +477,7 @@
         <!--Groups-->
         <scene sceneID="0lY-Iy-n1G">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="z1f-E4-5cK" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="z1f-E4-5cK" customClass="GroupNavigationContoller" customModule="app" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Groups" image="rectangle.stack.person.crop" catalog="system" id="an4-Cc-8xl"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="tPd-5m-jCi">
@@ -496,7 +496,7 @@
         <!--Friends-->
         <scene sceneID="AIA-MX-NVe">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="0ZA-eR-qKH" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="0ZA-eR-qKH" customClass="FriendNavigationContoller" customModule="app" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Friends" id="6Wm-E2-vnd">
                         <imageReference key="image" image="person.2" catalog="system" symbolScale="large"/>
                     </tabBarItem>
