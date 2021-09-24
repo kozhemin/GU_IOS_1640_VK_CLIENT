@@ -99,3 +99,9 @@ extension FriendTableViewController {
         return sections[section].letter
     }
 }
+
+extension FriendTableViewController: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_: UIGestureRecognizer, shouldRequireFailureOf _: UIGestureRecognizer) -> Bool {
+        return true
+    }
+}

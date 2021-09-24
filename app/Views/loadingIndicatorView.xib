@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="loadingIndicatorView" customModule="app" customModuleProvider="target">
+            <connections>
+                <outlet property="c1" destination="ct9-dz-Tva" id="W6R-WB-plb"/>
+                <outlet property="c2" destination="ap8-gQ-eKc" id="wvx-nH-Hc4"/>
+                <outlet property="c3" destination="fAN-nj-a8G" id="UbB-MB-XPH"/>
+                <outlet property="contentView" destination="iN0-l3-epB" id="MZT-uo-N6p"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="438" height="209"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7mM-Xh-0II">
+                    <rect key="frame" x="169" y="97" width="100" height="15"/>
+                    <subviews>
+                        <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="qbp-zB-kZg">
+                            <rect key="frame" x="0.0" y="0.0" width="100" height="15"/>
+                            <subviews>
+                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="circle.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="ct9-dz-Tva" userLabel="circle1">
+                                    <rect key="frame" x="0.0" y="0.5" width="15" height="14"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="15" id="XH4-Hy-hQF"/>
+                                        <constraint firstAttribute="width" constant="15" id="jzY-Jd-yOG"/>
+                                    </constraints>
+                                </imageView>
+                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="circle.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="ap8-gQ-eKc" userLabel="circle2">
+                                    <rect key="frame" x="42.5" y="0.5" width="15" height="14"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="15" id="WyU-l5-BiT"/>
+                                    </constraints>
+                                </imageView>
+                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="circle.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="fAN-nj-a8G" userLabel="circle3">
+                                    <rect key="frame" x="85" y="0.5" width="15" height="14"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="15" id="cA2-X8-EvG"/>
+                                        <constraint firstAttribute="width" constant="15" id="hJ0-Cv-05S"/>
+                                    </constraints>
+                                </imageView>
+                            </subviews>
+                        </stackView>
+                    </subviews>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    <constraints>
+                        <constraint firstItem="qbp-zB-kZg" firstAttribute="leading" secondItem="7mM-Xh-0II" secondAttribute="leading" id="U6i-Iz-8u8"/>
+                        <constraint firstAttribute="height" constant="15" id="ayK-HT-LJw"/>
+                        <constraint firstAttribute="trailing" secondItem="qbp-zB-kZg" secondAttribute="trailing" id="ekP-0q-67S"/>
+                        <constraint firstAttribute="width" constant="100" id="gVT-jA-VUT"/>
+                        <constraint firstItem="qbp-zB-kZg" firstAttribute="top" secondItem="7mM-Xh-0II" secondAttribute="top" id="ly2-2S-iUc"/>
+                        <constraint firstAttribute="bottom" secondItem="qbp-zB-kZg" secondAttribute="bottom" id="vir-mF-6jy"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="7mM-Xh-0II" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="3J5-Eg-XcZ"/>
+                <constraint firstItem="7mM-Xh-0II" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="5XZ-yG-APW"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="159.42028985507247" y="-128.23660714285714"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="circle.fill" catalog="system" width="128" height="121"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
