@@ -92,12 +92,11 @@
                         <outlet property="loginField" destination="xl2-rE-jT4" id="zYG-zr-EmH"/>
                         <outlet property="passwordField" destination="9mi-Nt-tD2" id="fd4-6U-jVJ"/>
                         <outlet property="scrollView" destination="yKU-1P-JBJ" id="i0l-fq-yED"/>
-                        <segue destination="wvB-Xt-8Ae" kind="presentation" identifier="LoginSegue" modalPresentationStyle="fullScreen" id="1dL-Kp-tFt"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hIJ-Y1-uKb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="356" y="-61.330049261083744"/>
+            <point key="canvasLocation" x="202" y="-61"/>
         </scene>
         <!--Group Search-->
         <scene sceneID="Hyj-gT-wzk">
@@ -388,7 +387,7 @@
         <!--Tab Bar Controller-->
         <scene sceneID="6Pr-fL-6vc">
             <objects>
-                <tabBarController id="wvB-Xt-8Ae" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="MainNavController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="wvB-Xt-8Ae" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="Guj-Xv-WlW"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="0sR-uc-tGh">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="49"/>
@@ -478,7 +477,7 @@
         <!--Groups-->
         <scene sceneID="0lY-Iy-n1G">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="z1f-E4-5cK" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="z1f-E4-5cK" customClass="GroupNavigationContoller" customModule="app" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Groups" image="rectangle.stack.person.crop" catalog="system" id="an4-Cc-8xl"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="tPd-5m-jCi">
@@ -497,7 +496,7 @@
         <!--Friends-->
         <scene sceneID="AIA-MX-NVe">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="0ZA-eR-qKH" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="0ZA-eR-qKH" customClass="FriendNavigationContoller" customModule="app" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Friends" id="6Wm-E2-vnd">
                         <imageReference key="image" image="person.2" catalog="system" symbolScale="large"/>
                     </tabBarItem>

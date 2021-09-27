@@ -36,6 +36,11 @@ class FriendTableViewController: UITableViewController {
     public func loadData() {
         friend = testFriendData
     }
+
+    private func getRowData(indexPath: IndexPath) -> Friend {
+        let section = sections[indexPath.section]
+        return section.data[indexPath.row]
+    }
 }
 
 extension FriendTableViewController {
@@ -67,6 +72,25 @@ extension FriendTableViewController {
     }
 
     override func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let rowData = getRowData(indexPath: indexPath)
+        if rowData.photoGallery == nil || rowData.photoGallery?.count == 0 {
+            let alert = UIAlertController(
+                title: "Confirm",
+                message: "Галерея этого друга пуста!",
+                preferredStyle: .actionSheet
+            )
+
+            alert.addAction(
+                UIAlertAction(
+                    title: NSLocalizedString("OK", comment: "Default action"),
+                    style: .default
+                )
+            )
+            present(alert, animated: true, completion: nil)
+            tableView.deselectRow(at: indexPath, animated: true)
+            return
+        }
+
         performSegue(
             withIdentifier: "showGallery",
             sender: indexPath
@@ -76,12 +100,9 @@ extension FriendTableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let galleryController = segue.destination as? GalleryCollectionViewController
         else { return }
-
         let indexPath = sender as! IndexPath
-        let section = sections[indexPath.section]
-        let sectionData = section.data[indexPath.row]
-
-        guard let galleryImages = sectionData.photoGallery
+        let rowData = getRowData(indexPath: indexPath)
+        guard let galleryImages = rowData.photoGallery
         else { return }
 
         galleryController.loadData(items: galleryImages)
