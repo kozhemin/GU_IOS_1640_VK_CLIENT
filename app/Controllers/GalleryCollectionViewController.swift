@@ -35,4 +35,19 @@ class GalleryCollectionViewController: UICollectionViewController {
 
         return cell
     }
+
+    override func collectionView(_: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        performSegue(
+            withIdentifier: "showPhotoSlider",
+            sender: indexPath
+        )
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let sliderVc = segue.destination as? PhotoSliderViewController
+        else { return }
+
+        let indexPath = sender as! IndexPath
+        sliderVc.setImages(images: galleryItem, indexAt: indexPath.row)
+    }
 }

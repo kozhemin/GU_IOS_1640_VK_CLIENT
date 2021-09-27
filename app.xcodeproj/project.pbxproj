@@ -30,6 +30,7 @@
 		97FC942426E6AB2C000046BE /* loadingIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97FC942326E6AB2C000046BE /* loadingIndicatorView.swift */; };
 		97FC942826E6C219000046BE /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97FC942726E6C219000046BE /* UIColor.swift */; };
 		97FC942A26E81758000046BE /* UIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97FC942926E81758000046BE /* UIImageView.swift */; };
+		97FC943A26EAB1E6000046BE /* PhotoSliderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97FC943926EAB1E6000046BE /* PhotoSliderViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -58,6 +59,7 @@
 		97FC942326E6AB2C000046BE /* loadingIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = loadingIndicatorView.swift; sourceTree = "<group>"; };
 		97FC942726E6C219000046BE /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		97FC942926E81758000046BE /* UIImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageView.swift; sourceTree = "<group>"; };
+		97FC943926EAB1E6000046BE /* PhotoSliderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoSliderViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +81,7 @@
 				9702BAC126CC791C009EC1A2 /* GroupTableViewController.swift */,
 				9702BAC326CC794F009EC1A2 /* GroupSearchTableViewController.swift */,
 				9702BAC526CC79C7009EC1A2 /* GalleryCollectionViewController.swift */,
+				97FC943926EAB1E6000046BE /* PhotoSliderViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -243,6 +246,7 @@
 				9702BAC226CC791C009EC1A2 /* GroupTableViewController.swift in Sources */,
 				9702BAC026CC78F4009EC1A2 /* FriendTableViewController.swift in Sources */,
 				975C833226D99667001A8D80 /* UIViewClip.swift in Sources */,
+				97FC943A26EAB1E6000046BE /* PhotoSliderViewController.swift in Sources */,
 				9702BB3626D56BDB009EC1A2 /* Group.swift in Sources */,
 				97F6266926C6AD33001786F2 /* AppDelegate.swift in Sources */,
 				975C832E26D9701D001A8D80 /* FriendTableViewCell.swift in Sources */,
