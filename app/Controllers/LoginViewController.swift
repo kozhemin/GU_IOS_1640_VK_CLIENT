@@ -33,12 +33,6 @@ class LoginViewController: UIViewController {
 
         // Запуск анимации индикатора
         loadingView.indicatorAnimation()
-        
-        // Example call Singleton
-        let authData = AuthData.share
-        print("Token: \(authData.token)")
-        print("UserId: \(authData.userId)")
-        print(authData)
     }
 
     override func viewWillAppear(_ animated: Bool) {
