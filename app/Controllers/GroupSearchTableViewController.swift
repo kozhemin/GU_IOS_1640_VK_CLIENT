@@ -8,14 +8,16 @@
 import UIKit
 
 class GroupSearchTableViewController: UITableViewController {
-    private var group = [DefaultTableDataProtocol]() {
+    @IBOutlet var GroupSearchTableView: UITableView!
+    @IBOutlet var searchField: UISearchBar!
+
+    private var group = [Group]() {
         didSet {
             GroupSearchTableView.reloadData()
         }
     }
 
-    @IBOutlet var GroupSearchTableView: UITableView!
-    @IBOutlet var searchField: UISearchBar!
+    private let networkService = NetworkService()
 
     override func viewDidLoad() {
         searchField.delegate = self
@@ -25,12 +27,16 @@ class GroupSearchTableViewController: UITableViewController {
         loadData()
     }
 
-    func getGroup() -> [DefaultTableDataProtocol] {
+    func getGroup() -> [Group] {
         return group
     }
 
     func loadData() {
-        group = testGroupData.filter { $0.isMain == false }
+        let defaultQueryString = "apple swift"
+        networkService.searchGroups(query: defaultQueryString) { [weak self] resp in
+            guard let self = self else { return }
+            self.group = resp
+        }
     }
 }
 
@@ -53,50 +59,47 @@ extension GroupSearchTableViewController {
 }
 
 extension GroupSearchTableViewController {
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if !testGroupData.isMain(groupName: group[indexPath.row].name) {
-            let alert = UIAlertController(
-                title: "Confirm",
-                message: "Are you sure you want to add a group ?",
-                preferredStyle: .actionSheet
+    override func tableView(_: UITableView, didSelectRowAt _: IndexPath) {
+        let alert = UIAlertController(
+            title: "Confirm",
+            message: "Are you sure you want to add a group ?",
+            preferredStyle: .actionSheet
+        )
+
+        alert.addAction(
+            UIAlertAction(
+                title: NSLocalizedString("OK", comment: "Default action"),
+                style: .default,
+                handler: { _ in
+                    self.performSegue(withIdentifier: "addGroupSegue", sender: nil)
+                }
             )
+        )
 
-            alert.addAction(
-                UIAlertAction(
-                    title: NSLocalizedString("OK", comment: "Default action"),
-                    style: .default,
-                    handler: { _ in
-                        self.performSegue(withIdentifier: "addGroupSegue", sender: nil)
-                    }
-                )
+        alert.addAction(
+            UIAlertAction(
+                title: "Cancel",
+                style: .cancel,
+                handler: nil
             )
+        )
 
-            alert.addAction(
-                UIAlertAction(
-                    title: "Cancel",
-                    style: .cancel,
-                    handler: nil
-                )
-            )
-
-            present(alert, animated: true, completion: nil)
-
-        } else {
-            tableView.deselectRow(at: indexPath, animated: true)
-        }
+        present(alert, animated: true, completion: nil)
     }
 
     override func tableView(_: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        // запрет добавления группы если такая уже добавлена
-        if testGroupData.isMain(groupName: group[indexPath.row].name) {
-            return nil
+        let actionCustomBtn = UIContextualAction(style: .normal, title: "") { _, _, complete in
+
+            self.networkService.joinToGroup(
+                groupId: Int(self.group[indexPath.row].id)
+            ) { codeResp in
+                if codeResp == 1 {
+                    complete(true)
+                }
+            }
+            // self.loadData()
         }
 
-        let actionCustomBtn = UIContextualAction(style: .normal, title: "") { _, _, complete in
-            testGroupData.changeAttrIsMainByName(groupName: self.group[indexPath.row].name, direction: true)
-            complete(true)
-            self.loadData()
-        }
         actionCustomBtn.backgroundColor = .blue
         actionCustomBtn.image = UIImage(systemName: "person.fill.checkmark")
         return UISwipeActionsConfiguration(actions: [actionCustomBtn])
@@ -109,8 +112,9 @@ extension GroupSearchTableViewController: UISearchBarDelegate {
             return loadData()
         }
 
-        group = testGroupData.filter {
-            $0.name.lowercased().contains(searchText.lowercased()) && !$0.isMain
+        networkService.searchGroups(query: searchText.lowercased()) { [weak self] resp in
+            guard let self = self else { return }
+            self.group = resp
         }
     }
 }

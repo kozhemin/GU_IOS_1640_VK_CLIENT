@@ -12,7 +12,7 @@ struct PhotoGallery {
     var image: UIImage?
 }
 
-struct Friend: DefaultTableDataProtocol {
+struct Friend {
     var name: String
     var image: UIImage?
     var description: String?

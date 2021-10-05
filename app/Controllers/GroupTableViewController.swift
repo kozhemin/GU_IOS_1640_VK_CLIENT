@@ -8,13 +8,6 @@
 import UIKit
 
 class GroupTableViewController: UITableViewController {
-    private var group = [DefaultTableDataProtocol]() {
-        didSet {
-            setHeaderLabel()
-            tableView.reloadData()
-        }
-    }
-
     @IBOutlet var GroupTableView: UITableView!
     @IBOutlet var tableViewHeader: GroupTableHeader!
 
@@ -24,9 +17,24 @@ class GroupTableViewController: UITableViewController {
               let index = vc.tableView.indexPathForSelectedRow?.row
         else { return }
 
-        testGroupData.changeAttrIsMainByName(groupName: vc.getGroup()[index].name, direction: true)
-        loadData()
+        networkService.joinToGroup(
+            groupId: Int(vc.getGroup()[index].id)
+        ) { [weak self] codeResp in
+            if codeResp == 1 {
+                guard let self = self else { return }
+                self.loadData()
+            }
+        }
     }
+
+    private var group = [Group]() {
+        didSet {
+            setHeaderLabel()
+            tableView.reloadData()
+        }
+    }
+
+    private let networkService = NetworkService()
 
     override func viewDidLoad() {
         // header image
@@ -36,13 +44,13 @@ class GroupTableViewController: UITableViewController {
 
     override func viewWillAppear(_: Bool) {
         loadData()
-        
-        // Example vk api request
-        NetworkService().getFriends()
     }
 
     public func loadData() {
-        group = testGroupData.filter { $0.isMain == true }
+        networkService.getGroups(userId: AuthData.share.userId) { [weak self] resp in
+            guard let self = self else { return }
+            self.group = resp
+        }
     }
 
     private func setHeaderLabel() {
@@ -69,7 +77,7 @@ extension GroupTableViewController {
 }
 
 extension GroupTableViewController {
-    override func tableView(_: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+    override func tableView(_: UITableView, trailingSwipeActionsConfigurationForRowAt _: IndexPath) -> UISwipeActionsConfiguration? {
         let actionDelete = UIContextualAction(style: .destructive, title: "") { _, _, complete in
 
             let alert = UIAlertController(
@@ -83,8 +91,8 @@ extension GroupTableViewController {
                     title: NSLocalizedString("OK", comment: "Default action"),
                     style: .destructive,
                     handler: { _ in
-                        testGroupData.changeAttrIsMainByName(groupName: self.group[indexPath.row].name, direction: false)
-                        self.loadData()
+                        // Тут пока заглушка
+//                        self.loadData()
                     }
                 )
             )

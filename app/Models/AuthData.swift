@@ -11,5 +11,5 @@ final class AuthData: AuthDataProtocol {
     var token = ""
     var userId = 0
     static let share = AuthData()
-    private init () {}
+    private init() {}
 }
