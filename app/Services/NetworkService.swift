@@ -17,35 +17,52 @@ class NetworkService {
 
     // MARK: Получение списка друзей
 
-    func getFriends() {
+    func getFriends(completion: @escaping ([Friend]) -> Void) {
         guard let url = prepareUrl(
             methodName: "friends.get",
-            params: [URLQueryItem(name: "fields", value: "nickname, domain, sex, bdate, city, country")]
+            params: [URLQueryItem(name: "fields", value: "photo_100, nickname, domain, sex, bdate, city, country")]
         )
         else { return }
-//        vkRequest(url: url)
+
+        vkRequest(url: url) { resp in
+            do {
+                let friendList = try JSONDecoder()
+                    .decode(VKResponse<FriendItems>.self, from: resp)
+                completion(friendList.response.items)
+            } catch {
+                print("getFriends: Что-то пошло не так c JSONDecoder!")
+            }
+        }
     }
 
     // MARK: Получение фотографий человека
 
-    func getPhotos(ownerId: Int) {
+    func getPhotos(ownerId: Int,
+                   completion: @escaping ([PhotoGallery]) -> Void)
+    {
         guard let url = prepareUrl(
             methodName: "photos.getAll",
             params: [URLQueryItem(name: "owner_id", value: String(ownerId))]
         )
         else { return }
-//        vkRequest(url: url)
+
+        vkRequest(url: url) { resp in
+            do {
+                let photoList = try JSONDecoder()
+                    .decode(VKResponse<PhotoGalleryItems>.self, from: resp)
+                completion(photoList.response.items)
+            } catch {
+                print("getPhotos: Что-то пошло не так c JSONDecoder!")
+            }
+        }
     }
 
     // MARK: Получение групп текущего пользователя
 
-    func getGroups(userId: Int,
-                   completion: @escaping ([Group]) -> Void)
-    {
+    func getGroups(completion: @escaping ([Group]) -> Void) {
         guard let url = prepareUrl(
             methodName: "groups.get",
             params: [
-                URLQueryItem(name: "user_id", value: String(userId)),
                 URLQueryItem(name: "extended", value: "1"),
                 URLQueryItem(name: "fields", value: "description"),
             ]
@@ -109,6 +126,30 @@ class NetworkService {
                 completion(vkResp.response)
             } catch {
                 print("joinToGroup: Что-то пошло не так c JSONDecoder!")
+            }
+        }
+    }
+
+    // MARK: покинуть сообщество
+
+    func leaveGroup(groupId: Int,
+                    completion: @escaping (Int) -> Void)
+    {
+        guard let url = prepareUrl(
+            methodName: "groups.leave",
+            params: [
+                URLQueryItem(name: "group_id", value: String(groupId)),
+            ]
+        )
+        else { return }
+
+        vkRequest(url: url) { resp in
+            do {
+                let vkResp = try JSONDecoder()
+                    .decode(VKResponse<Int>.self, from: resp)
+                completion(vkResp.response)
+            } catch {
+                print("leaveGroup: Что-то пошло не так c JSONDecoder!")
             }
         }
     }

@@ -10,7 +10,11 @@ import UIKit
 private let reuseIdentifier = "galleryCell"
 
 class GalleryCollectionViewController: UICollectionViewController {
-    private var galleryItem = [PhotoGallery]()
+    private var galleryItem = [PhotoGallery]() {
+        didSet {
+            collectionView.reloadData()
+        }
+    }
 
     func loadData(items: [PhotoGallery]) {
         galleryItem = items

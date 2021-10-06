@@ -5,6 +5,7 @@
 //  Created by Егор Кожемин on 10.09.2021.
 //
 
+import Nuke
 import UIKit
 
 enum SwipeDirection {
@@ -62,11 +63,20 @@ final class PhotoSliderViewController: UIViewController {
     }
 
     private func presentDefaultImage() {
-        imageView?.image = images[currentImageIndex].image
+        guard let url = images[currentImageIndex].items.getImageByType(type: "x")?.photoUrl,
+              let imageView = imageView
+        else { return }
+
+        Nuke.loadImage(
+            with: url,
+            into: imageView
+        )
+
         changeImageLabel()
     }
 
     private func indicatorViewConfig() {
+        guard indicatorImages.count > 1 else { return }
         for item in indicatorImages {
             sliderIndicator.addArrangedSubview(item)
         }
@@ -115,6 +125,7 @@ final class PhotoSliderViewController: UIViewController {
     }
 
     private func changeSliderIndicator() {
+        guard indicatorImages.count > 1 else { return }
         for item in indicatorImages {
             item.tintColor = UIColor.systemBlue
         }
@@ -171,10 +182,18 @@ final class PhotoSliderViewController: UIViewController {
         }
 
         if showImage {
-            imageView?.image = images[currentImageIndex].image
+            guard let url = images[currentImageIndex].items.getImageByType(type: "x")?.photoUrl,
+                  let imageView = imageView
+            else { return }
+
+            Nuke.loadImage(
+                with: url,
+                into: imageView
+            )
+
             // Hide off the screen
-            imageView?.center.x += imageDirectionOffest
-            sliderArea.addSubview(imageView ?? UIImageView())
+            imageView.center.x += imageDirectionOffest
+            sliderArea.addSubview(imageView)
 
             UIView.animate(
                 withDuration: 0.6,

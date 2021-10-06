@@ -24,6 +24,7 @@
 		97764F442707C97600C17CDD /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97764F432707C97600C17CDD /* NetworkService.swift */; };
 		97764F462707CE4A00C17CDD /* VKLoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97764F452707CE4A00C17CDD /* VKLoginController.swift */; };
 		97764F48270A2F2800C17CDD /* AuthDataProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97764F47270A2F2800C17CDD /* AuthDataProtocol.swift */; };
+		97858D14270E3EB90064AD67 /* PhotoGallery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97858D13270E3EB90064AD67 /* PhotoGallery.swift */; };
 		97CAE33B2704EB7300BC9EA1 /* AuthData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97CAE33A2704EB7300BC9EA1 /* AuthData.swift */; };
 		97E9CC6026F524B20030337B /* NavigationAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E9CC5F26F524B20030337B /* NavigationAnimator.swift */; };
 		97E9CC6426FBB2060030337B /* CusomNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E9CC6326FBB2060030337B /* CusomNavigationController.swift */; };
@@ -57,6 +58,7 @@
 		97764F432707C97600C17CDD /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		97764F452707CE4A00C17CDD /* VKLoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKLoginController.swift; sourceTree = "<group>"; };
 		97764F47270A2F2800C17CDD /* AuthDataProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthDataProtocol.swift; sourceTree = "<group>"; };
+		97858D13270E3EB90064AD67 /* PhotoGallery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoGallery.swift; sourceTree = "<group>"; };
 		97CAE33A2704EB7300BC9EA1 /* AuthData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthData.swift; sourceTree = "<group>"; };
 		97E9CC5F26F524B20030337B /* NavigationAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationAnimator.swift; sourceTree = "<group>"; };
 		97E9CC6326FBB2060030337B /* CusomNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CusomNavigationController.swift; sourceTree = "<group>"; };
@@ -108,6 +110,7 @@
 				9702BB3F26D6262F009EC1A2 /* Friend.swift */,
 				97CAE33A2704EB7300BC9EA1 /* AuthData.swift */,
 				97585847270C4C31001CF35A /* VKResponse.swift */,
+				97858D13270E3EB90064AD67 /* PhotoGallery.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -300,6 +303,7 @@
 				97764F48270A2F2800C17CDD /* AuthDataProtocol.swift in Sources */,
 				97E9CC6026F524B20030337B /* NavigationAnimator.swift in Sources */,
 				97CAE33B2704EB7300BC9EA1 /* AuthData.swift in Sources */,
+				97858D14270E3EB90064AD67 /* PhotoGallery.swift in Sources */,
 				9702BAC626CC79C7009EC1A2 /* GalleryCollectionViewController.swift in Sources */,
 				9702BB3B26D58466009EC1A2 /* UITableViewControllerExtension.swift in Sources */,
 				97FC942826E6C219000046BE /* UIColor.swift in Sources */,

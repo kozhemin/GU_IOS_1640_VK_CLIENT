@@ -5,6 +5,7 @@
 //  Created by Егор Кожемин on 18.08.2021.
 //
 
+import Nuke
 import UIKit
 
 struct Section {
@@ -14,27 +15,29 @@ struct Section {
 
 class FriendTableViewController: UITableViewController {
     @IBOutlet var FriendTableView: UITableView!
-    private var friend = [Friend]() {
+
+    private let networkService = NetworkService()
+    private var friend = [Friend]()
+    private var sections = [Section]() {
         didSet {
-            friend.sort { $0.name < $1.name }
+            FriendTableView.reloadData()
         }
     }
-
-    private var sections = [Section]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         loadData()
-
-        let groupedDictionary = Dictionary(grouping: friend, by: { String($0.name.prefix(1)) })
-        let keys = groupedDictionary.keys.sorted()
-        sections = keys.map { Section(letter: $0, data: groupedDictionary[$0]!) }
-
-        FriendTableView.reloadData()
     }
 
     public func loadData() {
-        friend = testFriendData
+        networkService.getFriends { [weak self] resp in
+            guard let self = self else { return }
+            self.friend = resp
+
+            let groupedDictionary = Dictionary(grouping: self.friend, by: { String($0.lastName.prefix(1)) })
+            let keys = groupedDictionary.keys.sorted()
+            self.sections = keys.map { Section(letter: $0, data: groupedDictionary[$0]!) }
+        }
     }
 
     private func getRowData(indexPath: IndexPath) -> Friend {
@@ -59,38 +62,25 @@ extension FriendTableViewController {
         let section = sections[indexPath.section]
         let sectionData = section.data[indexPath.row]
 
-        cell.labelName?.text = sectionData.name
-        cell.labelDescription?.text = sectionData.description
+        cell.labelName?.text = "\(sectionData.lastName) \(sectionData.firstName)"
+        cell.labelDescription?.text = sectionData.nickName
 
         // add shadow to image container
         cell.contentImage.addShadow()
 
         // clip image
         cell.avatarImage.clip(borderColor: UIColor.orange.cgColor)
-        cell.avatarImage.image = sectionData.image
+
+        if let url = sectionData.photoUrl {
+            Nuke.loadImage(
+                with: url,
+                into: cell.avatarImage
+            )
+        }
         return cell
     }
 
     override func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let rowData = getRowData(indexPath: indexPath)
-        if rowData.photoGallery == nil || rowData.photoGallery?.count == 0 {
-            let alert = UIAlertController(
-                title: "Confirm",
-                message: "Галерея этого друга пуста!",
-                preferredStyle: .actionSheet
-            )
-
-            alert.addAction(
-                UIAlertAction(
-                    title: NSLocalizedString("OK", comment: "Default action"),
-                    style: .default
-                )
-            )
-            present(alert, animated: true, completion: nil)
-            tableView.deselectRow(at: indexPath, animated: true)
-            return
-        }
-
         performSegue(
             withIdentifier: "showGallery",
             sender: indexPath
@@ -102,10 +92,11 @@ extension FriendTableViewController {
         else { return }
         let indexPath = sender as! IndexPath
         let rowData = getRowData(indexPath: indexPath)
-        guard let galleryImages = rowData.photoGallery
-        else { return }
 
-        galleryController.loadData(items: galleryImages)
+        networkService.getPhotos(ownerId: Int(rowData.id)) { [weak self] resp in
+            guard let self = self else { return }
+            galleryController.loadData(items: resp)
+        }
     }
 
     override func numberOfSections(in _: UITableView) -> Int {

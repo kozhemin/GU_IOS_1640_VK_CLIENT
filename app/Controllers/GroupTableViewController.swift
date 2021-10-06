@@ -11,6 +11,15 @@ class GroupTableViewController: UITableViewController {
     @IBOutlet var GroupTableView: UITableView!
     @IBOutlet var tableViewHeader: GroupTableHeader!
 
+    private var group = [Group]() {
+        didSet {
+            setHeaderLabel()
+            tableView.reloadData()
+        }
+    }
+
+    private let networkService = NetworkService()
+
     @IBAction func addGroup(segue: UIStoryboardSegue) {
         guard segue.identifier == "addGroupSegue",
               let vc = segue.source as? GroupSearchTableViewController,
@@ -20,21 +29,12 @@ class GroupTableViewController: UITableViewController {
         networkService.joinToGroup(
             groupId: Int(vc.getGroup()[index].id)
         ) { [weak self] codeResp in
+            guard let self = self else { return }
             if codeResp == 1 {
-                guard let self = self else { return }
                 self.loadData()
             }
         }
     }
-
-    private var group = [Group]() {
-        didSet {
-            setHeaderLabel()
-            tableView.reloadData()
-        }
-    }
-
-    private let networkService = NetworkService()
 
     override func viewDidLoad() {
         // header image
@@ -47,7 +47,7 @@ class GroupTableViewController: UITableViewController {
     }
 
     public func loadData() {
-        networkService.getGroups(userId: AuthData.share.userId) { [weak self] resp in
+        networkService.getGroups { [weak self] resp in
             guard let self = self else { return }
             self.group = resp
         }
@@ -77,7 +77,7 @@ extension GroupTableViewController {
 }
 
 extension GroupTableViewController {
-    override func tableView(_: UITableView, trailingSwipeActionsConfigurationForRowAt _: IndexPath) -> UISwipeActionsConfiguration? {
+    override func tableView(_: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let actionDelete = UIContextualAction(style: .destructive, title: "") { _, _, complete in
 
             let alert = UIAlertController(
@@ -91,8 +91,14 @@ extension GroupTableViewController {
                     title: NSLocalizedString("OK", comment: "Default action"),
                     style: .destructive,
                     handler: { _ in
-                        // Тут пока заглушка
-//                        self.loadData()
+                        self.networkService.leaveGroup(
+                            groupId: Int(self.group[indexPath.row].id)
+                        ) { [weak self] codeResp in
+                            guard let self = self else { return }
+                            if codeResp == 1 {
+                                self.loadData()
+                            }
+                        }
                     }
                 )
             )
