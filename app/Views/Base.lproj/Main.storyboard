@@ -375,36 +375,14 @@
                                 <rect key="frame" x="0.0" y="88" width="375" height="611"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LF4-pg-xdc">
-                                <rect key="frame" x="93.666666666666671" y="704" width="187.66666666666663" height="20"/>
-                                <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="ifn-yZ-2VJ" userLabel="SliderIndicatorView">
-                                        <rect key="frame" x="0.0" y="0.0" width="187.66666666666666" height="20"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="20" id="Lk6-ir-CaS"/>
-                                        </constraints>
-                                    </stackView>
-                                </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstItem="ifn-yZ-2VJ" firstAttribute="top" secondItem="LF4-pg-xdc" secondAttribute="top" id="1Za-Xp-jTe"/>
-                                    <constraint firstAttribute="height" constant="20" id="LDn-mL-gku"/>
-                                    <constraint firstAttribute="bottom" secondItem="ifn-yZ-2VJ" secondAttribute="bottom" id="W1e-Qn-HtI"/>
-                                    <constraint firstItem="ifn-yZ-2VJ" firstAttribute="leading" secondItem="LF4-pg-xdc" secondAttribute="leading" id="bkb-sN-M8R"/>
-                                    <constraint firstAttribute="trailing" secondItem="ifn-yZ-2VJ" secondAttribute="trailing" id="dpH-8C-O1L"/>
-                                </constraints>
-                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="1oe-gV-kyq"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="1oe-gV-kyq" firstAttribute="bottom" secondItem="LF4-pg-xdc" secondAttribute="bottom" constant="5" id="8Kp-4f-bIg"/>
-                            <constraint firstItem="LF4-pg-xdc" firstAttribute="width" secondItem="Dzb-eS-YnA" secondAttribute="width" multiplier="0.5" id="KX6-BV-rbM"/>
-                            <constraint firstItem="jk3-kV-Lcl" firstAttribute="trailing" secondItem="1oe-gV-kyq" secondAttribute="trailing" id="Nbl-op-1uv"/>
-                            <constraint firstItem="jk3-kV-Lcl" firstAttribute="leading" secondItem="1oe-gV-kyq" secondAttribute="leading" id="jMf-jL-4EH"/>
-                            <constraint firstItem="jk3-kV-Lcl" firstAttribute="top" secondItem="1oe-gV-kyq" secondAttribute="top" id="p3Z-1x-AOy"/>
-                            <constraint firstItem="LF4-pg-xdc" firstAttribute="top" secondItem="jk3-kV-Lcl" secondAttribute="bottom" constant="5" id="q6A-zb-P38"/>
-                            <constraint firstItem="LF4-pg-xdc" firstAttribute="centerX" secondItem="Dzb-eS-YnA" secondAttribute="centerX" id="yaQ-ok-5mz"/>
+                            <constraint firstItem="1oe-gV-kyq" firstAttribute="bottom" secondItem="jk3-kV-Lcl" secondAttribute="bottom" constant="30" id="NY5-rx-BdB"/>
+                            <constraint firstItem="jk3-kV-Lcl" firstAttribute="top" secondItem="1oe-gV-kyq" secondAttribute="top" id="ZW8-Aq-3FE"/>
+                            <constraint firstItem="jk3-kV-Lcl" firstAttribute="trailing" secondItem="1oe-gV-kyq" secondAttribute="trailing" id="ifo-EG-n56"/>
+                            <constraint firstItem="jk3-kV-Lcl" firstAttribute="leading" secondItem="1oe-gV-kyq" secondAttribute="leading" id="qc8-pv-pTa"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Slider" id="fyb-iL-ObO">
@@ -412,7 +390,6 @@
                     </navigationItem>
                     <connections>
                         <outlet property="sliderArea" destination="jk3-kV-Lcl" id="uXy-Io-V54"/>
-                        <outlet property="sliderIndicator" destination="ifn-yZ-2VJ" id="sY0-1z-VCV"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2jo-56-leU" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

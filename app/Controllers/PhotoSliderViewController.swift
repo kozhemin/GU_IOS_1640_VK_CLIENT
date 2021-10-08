@@ -8,200 +8,170 @@
 import Nuke
 import UIKit
 
-enum SwipeDirection {
+enum PhotoSwipe {
     case left
     case right
 }
 
 final class PhotoSliderViewController: UIViewController {
     @IBOutlet var sliderArea: UIView!
-    @IBOutlet var sliderIndicator: UIStackView!
-
-    private var imageView: UIImageView?
-    private var propertyAnimator: UIViewPropertyAnimator?
+    
+    lazy private var sourseView = UIImageView()
+    lazy private var targetView = UIImageView()
+    
+    private var currentImageIndex: Int = 0
     private var images = [PhotoGallery]()
-    private var indicatorImages = [UIImageView]()
-    private var currentImageIndex: Int = 0 {
-        didSet {
-            changeImageLabel()
-            changeSliderIndicator()
-        }
-    }
-
-    private var imageLabel: UILabel?
-
+    private let animateTime = 1.0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // config view
-        imageViewConfig()
-        imageLabelViewConfig()
-        indicatorViewConfig()
-
-        let panGR = UIPanGestureRecognizer(
+        
+        let swipeRight = UISwipeGestureRecognizer(
             target: self,
-            action: #selector(swipePan(_:))
-        )
-        imageView?.addGestureRecognizer(panGR)
-
-        presentDefaultImage()
+            action: #selector(respondToSwipeGesture))
+        swipeRight.direction = .right
+        self.view.addGestureRecognizer(swipeRight)
+        
+        let swipeLeft = UISwipeGestureRecognizer(
+            target: self,
+            action: #selector(respondToSwipeGesture))
+        swipeLeft.direction = .left
+        self.view.addGestureRecognizer(swipeLeft)
+        
+        // img congfig
+        targetView = UIImageView(frame: sliderArea.frame)
+        sourseView = UIImageView(frame: sliderArea.frame)
+        
+        sourseView.contentMode = .scaleAspectFill
+        targetView.contentMode = .scaleAspectFill
+        
+        sliderArea.addSubview(targetView)
+        sliderArea.addSubview(sourseView)
+        
+        showSlide(direction: nil)
     }
-
+    
     func setImages(images: [PhotoGallery], indexAt: Int) {
         self.images = images
-        setSliderIndicator()
         currentImageIndex = indexAt
     }
-
-    private func setSliderIndicator() {
-        for _ in images.enumerated() {
-            let indicatorImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 5, height: 5))
-            indicatorImageView.image = UIImage(systemName: "circle.fill")
-            indicatorImageView.tintColor = UIColor.systemBlue
-            indicatorImages.append(indicatorImageView)
-        }
-    }
-
-    private func presentDefaultImage() {
-        guard let url = images[currentImageIndex].items.getImageByType(type: "x")?.photoUrl,
-              let imageView = imageView
-        else { return }
-
-        Nuke.loadImage(
-            with: url,
-            into: imageView
-        )
-
-        changeImageLabel()
-    }
-
-    private func indicatorViewConfig() {
-        guard indicatorImages.count > 1 else { return }
-        for item in indicatorImages {
-            sliderIndicator.addArrangedSubview(item)
-        }
-    }
-
-    private func imageViewConfig() {
-        imageView = UIImageView(frame: sliderArea.bounds)
-        imageView?.contentMode = .scaleAspectFill
-        imageView?.isUserInteractionEnabled = true
-
-        guard let imageView = imageView
-        else { return }
-
-        sliderArea.addSubview(imageView)
-
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        let topConstraint = imageView.topAnchor.constraint(equalTo: sliderArea.topAnchor)
-        let leadingConstraint = imageView.leadingAnchor.constraint(equalTo: sliderArea.leadingAnchor)
-        let trailingConstraint = imageView.trailingAnchor.constraint(equalTo: sliderArea.trailingAnchor)
-        let bottomConstraint = imageView.bottomAnchor.constraint(equalTo: sliderArea.bottomAnchor)
-        sliderArea.addConstraints([topConstraint, leadingConstraint, trailingConstraint, bottomConstraint])
-    }
-
-    private func imageLabelViewConfig() {
-        imageLabel = UILabel()
-        imageLabel?.adjustsFontSizeToFitWidth = true
-        imageLabel?.backgroundColor = UIColor.lightGray
-        imageLabel?.alpha = 0.8
-        imageView?.addSubview(imageLabel ?? UILabel())
-        imageLabel?.translatesAutoresizingMaskIntoConstraints = false
-
-        guard let imageLabel = imageLabel,
-              let imageView = imageView
-        else { return }
-
-        NSLayoutConstraint.activate([
-            imageLabel.leadingAnchor.constraint(equalTo: imageView.leadingAnchor),
-            imageLabel.trailingAnchor.constraint(equalTo: imageView.trailingAnchor),
-            imageLabel.heightAnchor.constraint(equalToConstant: 50),
-            imageLabel.bottomAnchor.constraint(equalTo: imageView.bottomAnchor),
-        ])
-    }
-
-    private func changeImageLabel() {
-        imageLabel?.text = images[currentImageIndex].description
-    }
-
-    private func changeSliderIndicator() {
-        guard indicatorImages.count > 1 else { return }
-        for item in indicatorImages {
-            item.tintColor = UIColor.systemBlue
-        }
-        indicatorImages[currentImageIndex].tintColor = UIColor.red
-    }
-
+    
     @objc
-    private func swipePan(_ gesture: UIPanGestureRecognizer) {
-        let translation = gesture.translation(in: sliderArea)
-        switch gesture.state {
-        case .began:
-            propertyAnimator = UIViewPropertyAnimator(
-                duration: 2,
-                curve: .easeInOut,
-                animations: {
-                    self.imageView?.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
-                    self.imageView?.alpha = 0.8
-                }
-            )
-            propertyAnimator?.pauseAnimation()
-        case .changed:
-            propertyAnimator?.fractionComplete = abs(translation.x / 100)
-        case .ended:
-            propertyAnimator?.stopAnimation(true)
-            propertyAnimator?.finishAnimation(at: .current)
-
-            imageView?.transform = CGAffineTransform(scaleX: 1, y: 1)
-            imageView?.alpha = 1
-
-            if abs(translation.x) > 50 {
-                changeSlide(direction: translation.x > 0 ? SwipeDirection.left : SwipeDirection.right)
+    func respondToSwipeGesture(gesture: UIGestureRecognizer) {
+        if let swipeGesture = gesture as? UISwipeGestureRecognizer {
+            switch swipeGesture.direction {
+            case .right:
+                showSlide(direction: PhotoSwipe.right)
+            case .left:
+                showSlide(direction: PhotoSwipe.left)
+            default:
+                break
             }
-        default:
-            return
         }
     }
-
-    private func changeSlide(direction: SwipeDirection) {
-        var imageDirectionOffest: CGFloat = 1000
-        var showImage = false
-
-        switch direction {
-        case .left:
-            if currentImageIndex > 0 {
-                currentImageIndex -= 1
-                showImage = true
+    
+    private func showSlide(direction: PhotoSwipe?) {
+        var translationSourseX: CGFloat = 0
+        var translationTargetX: CGFloat = 0
+        let oldCurrentImageIndex = currentImageIndex
+        
+        if direction != nil {
+            var targetImageIndex: Int
+            switch direction! {
+            case .right:
+                translationSourseX = 1000.0
+                translationTargetX = -self.targetView.bounds.width
+                targetImageIndex = getNextImageIndex(direction: .right)
+            case .left:
+                translationSourseX = -1000.0
+                translationTargetX =  self.targetView.bounds.width
+                targetImageIndex = getNextImageIndex(direction: .left)
             }
-            imageDirectionOffest *= -1
-        case .right:
-            if images.count - 1 > currentImageIndex {
-                currentImageIndex += 1
-                showImage = true
+            
+            if targetImageIndex == oldCurrentImageIndex {
+                return
             }
-        }
 
-        if showImage {
-            guard let url = images[currentImageIndex].items.getImageByType(type: "x")?.photoUrl,
-                  let imageView = imageView
+            guard let url = images[targetImageIndex].items.getImageByType(type: "x")?.photoUrl
             else { return }
 
             Nuke.loadImage(
                 with: url,
-                into: imageView
+                into: targetView
             )
-
-            // Hide off the screen
-            imageView.center.x += imageDirectionOffest
-            sliderArea.addSubview(imageView)
-
-            UIView.animate(
-                withDuration: 0.6,
+            
+            UIView.animateKeyframes(
+                withDuration: animateTime,
                 delay: 0.0,
-                options: [.curveLinear, .transitionCrossDissolve]
+                options: .calculationModePaced
             ) {
-                self.imageView?.center.x += (imageDirectionOffest * -1)
+                UIView.addKeyframe(
+                    withRelativeStartTime: 0,
+                    relativeDuration: 0.75
+                ) {
+                    let translation = CGAffineTransform(
+                        translationX: translationSourseX,
+                        y: 0.0
+                    )
+                    let scale = CGAffineTransform(
+                        scaleX: 0.5,
+                        y: 0.5
+                    )
+                    self.sourseView.transform = translation.concatenating(scale)
+                }
+                
+                UIView.addKeyframe(withRelativeStartTime: 0.2, relativeDuration: 0.4) {
+                    let translation = CGAffineTransform(
+                        translationX: translationTargetX,
+                        y: 0.0
+                    )
+                    let scale = CGAffineTransform(
+                        scaleX: 0.8,
+                        y: 1.2
+                    )
+                    self.targetView.transform = translation.concatenating(scale)
+                }
+                
+                UIView.addKeyframe(withRelativeStartTime: 0.6, relativeDuration: 0.4) {
+                    self.targetView.transform = .identity
+                }
+            }
+        completion: { isCompleted in
+            if isCompleted {
+                self.sourseView.image = self.targetView.image
+                self.sourseView.transform = .identity
             }
         }
+            
+        } else {
+            
+            guard let url = images[getNextImageIndex(direction: direction)]
+                    .items.getImageByType(type: "x")?.photoUrl
+            else { return }
+
+            Nuke.loadImage(
+                with: url,
+                into: sourseView
+            )
+        }
+    }
+    
+    // MARK: Определяем индекс изображения
+    
+    private func getNextImageIndex(direction: PhotoSwipe?) -> Int {
+        guard direction != nil else { return currentImageIndex }
+        switch direction {
+        case .right:
+            if currentImageIndex > 0 {
+                currentImageIndex -= 1
+            }
+        case .left:
+            if images.count - 1 > currentImageIndex {
+                currentImageIndex += 1
+            }
+        default:
+            break
+        }
+        return currentImageIndex
     }
 }

@@ -15,7 +15,7 @@ struct Friend: Codable {
     var id: Double
     var firstName: String
     var lastName: String
-    var nickName: String
+    var nickName: String?
     var photo: String
     var domain: String
     var sex: Int?
