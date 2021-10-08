@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="T66-FK-Hlu">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="h4m-iE-R0b">
     <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -10,6 +11,40 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
+        <!--Login Controller-->
+        <scene sceneID="fSg-vr-Gzs">
+            <objects>
+                <viewController id="h4m-iE-R0b" customClass="VKLoginController" customModule="app" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="hNW-2Y-cIe">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="f5p-vr-auB">
+                                <rect key="frame" x="0.0" y="44" width="375" height="734"/>
+                                <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <wkWebViewConfiguration key="configuration">
+                                    <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
+                                    <wkPreferences key="preferences"/>
+                                </wkWebViewConfiguration>
+                            </wkWebView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="yQc-vb-UE0"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="yQc-vb-UE0" firstAttribute="bottom" secondItem="f5p-vr-auB" secondAttribute="bottom" id="Iuw-kc-1YD"/>
+                            <constraint firstItem="f5p-vr-auB" firstAttribute="leading" secondItem="yQc-vb-UE0" secondAttribute="leading" id="P8J-Bo-BgU"/>
+                            <constraint firstItem="f5p-vr-auB" firstAttribute="top" secondItem="yQc-vb-UE0" secondAttribute="top" id="QwV-Ee-GwM"/>
+                            <constraint firstItem="yQc-vb-UE0" firstAttribute="trailing" secondItem="f5p-vr-auB" secondAttribute="trailing" id="jfk-Ar-HZD"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="webView" destination="f5p-vr-auB" id="FjR-gc-RVb"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="mpd-Tz-2H6" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="321" y="-61"/>
+        </scene>
         <!--Login View Controller-->
         <scene sceneID="g6C-iA-cpS">
             <objects>
@@ -96,7 +131,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hIJ-Y1-uKb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="202" y="-61"/>
+            <point key="canvasLocation" x="-889" y="-61"/>
         </scene>
         <!--Group Search-->
         <scene sceneID="Hyj-gT-wzk">
@@ -113,7 +148,7 @@
                         </searchBar>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="YcT-78-JSG" style="IBUITableViewCellStyleDefault" id="Ei7-hP-Txu">
-                                <rect key="frame" x="0.0" y="68.333333969116211" width="375" height="70"/>
+                                <rect key="frame" x="0.0" y="88.666666030883789" width="375" height="70"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Ei7-hP-Txu" id="U9a-nk-I93">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="70"/>
@@ -159,7 +194,7 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="FriendCell" rowHeight="120" id="a54-Hg-KQC" customClass="FriendTableViewCell" customModule="app" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="24.333333969116211" width="375" height="120"/>
+                                <rect key="frame" x="0.0" y="44.666666030883789" width="375" height="120"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="a54-Hg-KQC" id="2L5-mr-hWV" userLabel="CellContent">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="120"/>
@@ -444,7 +479,7 @@
                         </view>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="GroupCell" id="K11-GT-b0A">
-                                <rect key="frame" x="0.0" y="124.33333396911621" width="375" height="70"/>
+                                <rect key="frame" x="0.0" y="144.66666603088379" width="375" height="70"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="K11-GT-b0A" id="aaV-W7-AI5">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="70"/>

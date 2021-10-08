@@ -36,6 +36,9 @@ class GroupTableViewController: UITableViewController {
 
     override func viewWillAppear(_: Bool) {
         loadData()
+        
+        // Example vk api request
+        NetworkService().getFriends()
     }
 
     public func loadData() {
