@@ -1,0 +1,69 @@
+//
+//  PhotoGallery.swift
+//  app
+//
+//  Created by Егор Кожемин on 06.10.2021.
+//
+
+import Foundation
+import UIKit
+
+struct PhotoGalleryItems: Codable {
+    var items: [PhotoGallery]
+}
+
+struct PhotoGallery: Codable {
+    var id: Double
+    var albumId: Double
+    var ownerId: Double
+    var text: String
+    var items: [ImageItem]
+
+    enum CodingKeys: String, CodingKey {
+        case id
+        case albumId = "album_id"
+        case ownerId = "owner_id"
+        case text
+        case items = "sizes"
+    }
+}
+
+extension PhotoGallery {
+    var description: String {
+        if text.isEmpty {
+            return "Фото из альбома №\(albumId)"
+        }
+        return text
+    }
+}
+
+struct ImageItem: Codable {
+    var type: String
+    var url: String
+
+    enum CodingKeys: String, CodingKey {
+        case type
+        case url
+    }
+}
+
+extension ImageItem {
+    var photoUrl: URL? {
+        URL(string: url)
+    }
+
+    var image: UIImage? {
+        guard let url = photoUrl else { return nil }
+        let data = try? Data(contentsOf: url)
+        return UIImage(data: data!)
+    }
+}
+
+extension Array where Element == ImageItem {
+    func getImageByType(type: String) -> Element? {
+        guard let index = firstIndex(where: { $0.type == type }) else {
+            return nil
+        }
+        return self[index]
+    }
+}

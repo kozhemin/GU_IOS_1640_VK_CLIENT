@@ -6,56 +6,28 @@
 //
 import UIKit
 
-struct Group: DefaultTableDataProtocol {
+struct GroupItems: Codable {
+    var items: [Group]
+}
+
+struct Group: Codable {
+    var id: Double
     var name: String
-    var image: UIImage?
-    var description: String?
-    var isMain: Bool
-}
+    var screenName: String
+    var photo: String
+    var description: String
 
-extension Array where Element == Group {
-    mutating func changeAttrIsMainByName(groupName: String, direction: Bool) {
-        guard let index = firstIndex(where: { $0.name == groupName }) else {
-            return
-        }
-        self[index].isMain = direction
-    }
-
-    func isMain(groupName: String) -> Bool {
-        guard let index = firstIndex(where: { $0.name == groupName }) else {
-            return false
-        }
-        return self[index].isMain
+    enum CodingKeys: String, CodingKey {
+        case id
+        case name
+        case screenName = "screen_name"
+        case photo = "photo_50"
+        case description
     }
 }
 
-var testGroupData: [Group] = [
-    Group(
-        name: "Группа1",
-        image: UIImage(named: "grouop-1"),
-        description: "Описание группы 1",
-        isMain: true
-    ),
-    Group(
-        name: "Группа2",
-        image: UIImage(named: "grouop-2"),
-        description: "Описание группы 2",
-        isMain: false
-    ),
-    Group(
-        name: "Группа3",
-        image: UIImage(named: "grouop-3"),
-        isMain: true
-    ),
-    Group(
-        name: "Группа4",
-        image: UIImage(named: "grouop-4"),
-        isMain: false
-    ),
-    Group(
-        name: "Группа5",
-        image: UIImage(named: "grouop-5"),
-        description: "Описание группы 5",
-        isMain: true
-    ),
-]
+extension Group {
+    var photoUrl: URL? {
+        URL(string: photo)
+    }
+}

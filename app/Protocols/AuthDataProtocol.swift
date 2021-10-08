@@ -7,5 +7,5 @@
 
 protocol AuthDataProtocol {
     var token: String { get set }
-    var userId: Int  { get set }
+    var userId: Int { get set }
 }

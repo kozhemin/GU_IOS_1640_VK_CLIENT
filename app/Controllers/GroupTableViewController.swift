@@ -8,15 +8,17 @@
 import UIKit
 
 class GroupTableViewController: UITableViewController {
-    private var group = [DefaultTableDataProtocol]() {
+    @IBOutlet var GroupTableView: UITableView!
+    @IBOutlet var tableViewHeader: GroupTableHeader!
+
+    private var group = [Group]() {
         didSet {
             setHeaderLabel()
             tableView.reloadData()
         }
     }
 
-    @IBOutlet var GroupTableView: UITableView!
-    @IBOutlet var tableViewHeader: GroupTableHeader!
+    private let networkService = NetworkService()
 
     @IBAction func addGroup(segue: UIStoryboardSegue) {
         guard segue.identifier == "addGroupSegue",
@@ -24,8 +26,14 @@ class GroupTableViewController: UITableViewController {
               let index = vc.tableView.indexPathForSelectedRow?.row
         else { return }
 
-        testGroupData.changeAttrIsMainByName(groupName: vc.getGroup()[index].name, direction: true)
-        loadData()
+        networkService.joinToGroup(
+            groupId: Int(vc.getGroup()[index].id)
+        ) { [weak self] codeResp in
+            guard let self = self else { return }
+            if codeResp == 1 {
+                self.loadData()
+            }
+        }
     }
 
     override func viewDidLoad() {
@@ -36,13 +44,13 @@ class GroupTableViewController: UITableViewController {
 
     override func viewWillAppear(_: Bool) {
         loadData()
-        
-        // Example vk api request
-        NetworkService().getFriends()
     }
 
     public func loadData() {
-        group = testGroupData.filter { $0.isMain == true }
+        networkService.getGroups { [weak self] resp in
+            guard let self = self else { return }
+            self.group = resp
+        }
     }
 
     private func setHeaderLabel() {
@@ -83,8 +91,14 @@ extension GroupTableViewController {
                     title: NSLocalizedString("OK", comment: "Default action"),
                     style: .destructive,
                     handler: { _ in
-                        testGroupData.changeAttrIsMainByName(groupName: self.group[indexPath.row].name, direction: false)
-                        self.loadData()
+                        self.networkService.leaveGroup(
+                            groupId: Int(self.group[indexPath.row].id)
+                        ) { [weak self] codeResp in
+                            guard let self = self else { return }
+                            if codeResp == 1 {
+                                self.loadData()
+                            }
+                        }
                     }
                 )
             )
