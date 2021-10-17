@@ -15,47 +15,49 @@ enum PhotoSwipe {
 
 final class PhotoSliderViewController: UIViewController {
     @IBOutlet var sliderArea: UIView!
-    
-    lazy private var sourseView = UIImageView()
-    lazy private var targetView = UIImageView()
-    
+
+    private lazy var sourseView = UIImageView()
+    private lazy var targetView = UIImageView()
+
     private var currentImageIndex: Int = 0
     private var images = [PhotoGallery]()
     private let animateTime = 1.0
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         let swipeRight = UISwipeGestureRecognizer(
             target: self,
-            action: #selector(respondToSwipeGesture))
+            action: #selector(respondToSwipeGesture)
+        )
         swipeRight.direction = .right
-        self.view.addGestureRecognizer(swipeRight)
-        
+        view.addGestureRecognizer(swipeRight)
+
         let swipeLeft = UISwipeGestureRecognizer(
             target: self,
-            action: #selector(respondToSwipeGesture))
+            action: #selector(respondToSwipeGesture)
+        )
         swipeLeft.direction = .left
-        self.view.addGestureRecognizer(swipeLeft)
-        
+        view.addGestureRecognizer(swipeLeft)
+
         // img congfig
         targetView = UIImageView(frame: sliderArea.frame)
         sourseView = UIImageView(frame: sliderArea.frame)
-        
+
         sourseView.contentMode = .scaleAspectFill
         targetView.contentMode = .scaleAspectFill
-        
+
         sliderArea.addSubview(targetView)
         sliderArea.addSubview(sourseView)
-        
+
         showSlide(direction: nil)
     }
-    
+
     func setImages(images: [PhotoGallery], indexAt: Int) {
         self.images = images
         currentImageIndex = indexAt
     }
-    
+
     @objc
     func respondToSwipeGesture(gesture: UIGestureRecognizer) {
         if let swipeGesture = gesture as? UISwipeGestureRecognizer {
@@ -69,25 +71,25 @@ final class PhotoSliderViewController: UIViewController {
             }
         }
     }
-    
+
     private func showSlide(direction: PhotoSwipe?) {
         var translationSourseX: CGFloat = 0
         var translationTargetX: CGFloat = 0
         let oldCurrentImageIndex = currentImageIndex
-        
+
         if direction != nil {
             var targetImageIndex: Int
             switch direction! {
             case .right:
                 translationSourseX = 1000.0
-                translationTargetX = -self.targetView.bounds.width
+                translationTargetX = -targetView.bounds.width
                 targetImageIndex = getNextImageIndex(direction: .right)
             case .left:
                 translationSourseX = -1000.0
-                translationTargetX =  self.targetView.bounds.width
+                translationTargetX = targetView.bounds.width
                 targetImageIndex = getNextImageIndex(direction: .left)
             }
-            
+
             if targetImageIndex == oldCurrentImageIndex {
                 return
             }
@@ -99,7 +101,7 @@ final class PhotoSliderViewController: UIViewController {
                 with: url,
                 into: targetView
             )
-            
+
             UIView.animateKeyframes(
                 withDuration: animateTime,
                 delay: 0.0,
@@ -119,7 +121,7 @@ final class PhotoSliderViewController: UIViewController {
                     )
                     self.sourseView.transform = translation.concatenating(scale)
                 }
-                
+
                 UIView.addKeyframe(withRelativeStartTime: 0.2, relativeDuration: 0.4) {
                     let translation = CGAffineTransform(
                         translationX: translationTargetX,
@@ -131,22 +133,21 @@ final class PhotoSliderViewController: UIViewController {
                     )
                     self.targetView.transform = translation.concatenating(scale)
                 }
-                
+
                 UIView.addKeyframe(withRelativeStartTime: 0.6, relativeDuration: 0.4) {
                     self.targetView.transform = .identity
                 }
             }
-        completion: { isCompleted in
-            if isCompleted {
-                self.sourseView.image = self.targetView.image
-                self.sourseView.transform = .identity
+            completion: { isCompleted in
+                if isCompleted {
+                    self.sourseView.image = self.targetView.image
+                    self.sourseView.transform = .identity
+                }
             }
-        }
-            
+
         } else {
-            
             guard let url = images[getNextImageIndex(direction: direction)]
-                    .items.getImageByType(type: "x")?.photoUrl
+                .items.getImageByType(type: "x")?.photoUrl
             else { return }
 
             Nuke.loadImage(
@@ -155,9 +156,9 @@ final class PhotoSliderViewController: UIViewController {
             )
         }
     }
-    
+
     // MARK: Определяем индекс изображения
-    
+
     private func getNextImageIndex(direction: PhotoSwipe?) -> Int {
         guard direction != nil else { return currentImageIndex }
         switch direction {

@@ -18,7 +18,7 @@ class GroupTableViewController: UITableViewController {
         }
     }
 
-    private let networkService = NetworkService()
+    private let realmProvider = ProviderDataService()
 
     @IBAction func addGroup(segue: UIStoryboardSegue) {
         guard segue.identifier == "addGroupSegue",
@@ -26,12 +26,12 @@ class GroupTableViewController: UITableViewController {
               let index = vc.tableView.indexPathForSelectedRow?.row
         else { return }
 
-        networkService.joinToGroup(
+        realmProvider.networkService.joinToGroup(
             groupId: Int(vc.getGroup()[index].id)
         ) { [weak self] codeResp in
             guard let self = self else { return }
             if codeResp == 1 {
-                self.loadData()
+                self.loadData(forceReload: true)
             }
         }
     }
@@ -46,8 +46,8 @@ class GroupTableViewController: UITableViewController {
         loadData()
     }
 
-    public func loadData() {
-        networkService.getGroups { [weak self] resp in
+    public func loadData(forceReload: Bool = false) {
+        realmProvider.loadGroups(forceReload: forceReload) { [weak self] resp in
             guard let self = self else { return }
             self.group = resp
         }
@@ -91,11 +91,10 @@ extension GroupTableViewController {
                     title: NSLocalizedString("OK", comment: "Default action"),
                     style: .destructive,
                     handler: { _ in
-                        self.networkService.leaveGroup(
-                            groupId: Int(self.group[indexPath.row].id)
-                        ) { [weak self] codeResp in
+                        self.realmProvider.leaveGroup(group: self.group[indexPath.row]) {
+                            [weak self] codeResp in
                             guard let self = self else { return }
-                            if codeResp == 1 {
+                            if codeResp {
                                 self.loadData()
                             }
                         }
