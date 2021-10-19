@@ -23,7 +23,9 @@ extension UITableViewController {
 //            conf.image = imageView.image
 
             let data = try? Data(contentsOf: photoUrl)
-            conf.image = UIImage(data: data!)
+            if data != nil {
+                conf.image = UIImage(data: data!)
+            }
         }
 
         cell.contentConfiguration = conf

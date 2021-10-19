@@ -17,7 +17,7 @@ class GroupSearchTableViewController: UITableViewController {
         }
     }
 
-    private let networkService = NetworkService()
+    private let realmProvider = ProviderDataService()
 
     override func viewDidLoad() {
         searchField.delegate = self
@@ -33,7 +33,7 @@ class GroupSearchTableViewController: UITableViewController {
 
     func loadData() {
         let defaultQueryString = "apple swift"
-        networkService.searchGroups(query: defaultQueryString) { [weak self] resp in
+        realmProvider.networkService.searchGroups(query: defaultQueryString) { [weak self] resp in
             guard let self = self else { return }
             self.group = resp
         }
@@ -89,15 +89,8 @@ extension GroupSearchTableViewController {
 
     override func tableView(_: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let actionCustomBtn = UIContextualAction(style: .normal, title: "") { _, _, complete in
-
-            self.networkService.joinToGroup(
-                groupId: Int(self.group[indexPath.row].id)
-            ) { codeResp in
-                if codeResp == 1 {
-                    complete(true)
-                }
-            }
-            // self.loadData()
+            self.realmProvider.joinToGroup(group: self.group[indexPath.row])
+            complete(true)
         }
 
         actionCustomBtn.backgroundColor = .blue
@@ -112,7 +105,7 @@ extension GroupSearchTableViewController: UISearchBarDelegate {
             return loadData()
         }
 
-        networkService.searchGroups(query: searchText.lowercased()) { [weak self] resp in
+        realmProvider.networkService.searchGroups(query: searchText.lowercased()) { [weak self] resp in
             guard let self = self else { return }
             self.group = resp
         }

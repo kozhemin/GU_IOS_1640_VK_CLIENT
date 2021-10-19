@@ -16,8 +16,15 @@ struct Section {
 class FriendTableViewController: UITableViewController {
     @IBOutlet var FriendTableView: UITableView!
 
-    private let networkService = NetworkService()
-    private var friend = [Friend]()
+    private let realmProvider = ProviderDataService()
+    private var friend = [Friend]() {
+        didSet {
+            let groupedDictionary = Dictionary(grouping: friend, by: { String($0.lastName.prefix(1)) })
+            let keys = groupedDictionary.keys.sorted()
+            sections = keys.map { Section(letter: $0, data: groupedDictionary[$0]!) }
+        }
+    }
+
     private var sections = [Section]() {
         didSet {
             FriendTableView.reloadData()
@@ -30,13 +37,9 @@ class FriendTableViewController: UITableViewController {
     }
 
     public func loadData() {
-        networkService.getFriends { [weak self] resp in
+        realmProvider.loadFriends { [weak self] resp in
             guard let self = self else { return }
             self.friend = resp
-
-            let groupedDictionary = Dictionary(grouping: self.friend, by: { String($0.lastName.prefix(1)) })
-            let keys = groupedDictionary.keys.sorted()
-            self.sections = keys.map { Section(letter: $0, data: groupedDictionary[$0]!) }
         }
     }
 
@@ -93,8 +96,7 @@ extension FriendTableViewController {
         let indexPath = sender as! IndexPath
         let rowData = getRowData(indexPath: indexPath)
 
-        networkService.getPhotos(ownerId: Int(rowData.id)) { [weak self] resp in
-            guard let self = self else { return }
+        realmProvider.loadPhoto(ownerId: Int(rowData.id)) { resp in
             galleryController.loadData(items: resp)
         }
     }
