@@ -1,5 +1,5 @@
 //
-//  RealmPhoto.swift
+//  RealmPhotoGallery.swift
 //  app
 //
 //  Created by Егор Кожемин on 17.10.2021.
@@ -33,5 +33,16 @@ extension RealmPhotoGallery {
         for itemImage in gallery.items {
             images[itemImage.type] = itemImage.url
         }
+    }
+}
+
+extension RealmPhotoGallery {
+    func getImageUrlByType(type: String) -> URL? {
+        for item in images {
+            if item.key == type {
+                return URL(string: item.value)
+            }
+        }
+        return nil
     }
 }

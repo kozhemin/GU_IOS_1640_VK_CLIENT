@@ -53,7 +53,20 @@ extension GroupSearchTableViewController {
             cell = UITableViewCell(style: .default, reuseIdentifier: "GroupCell")
         }
 
-        configGroupCell(cell: &cell, for: indexPath, item: group)
+        let currentGroup = group[indexPath.row]
+        var conf = cell.defaultContentConfiguration()
+
+        conf.text = currentGroup.name
+        conf.secondaryText = currentGroup.description
+
+        if let photoUrl = currentGroup.photoUrl {
+            let data = try? Data(contentsOf: photoUrl)
+            if data != nil {
+                conf.image = UIImage(data: data!)
+            }
+        }
+        cell.contentConfiguration = conf
+
         return cell
     }
 }

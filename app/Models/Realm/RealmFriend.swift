@@ -40,3 +40,9 @@ extension RealmFriend {
         sex = friend.sex
     }
 }
+
+extension RealmFriend {
+    var photoUrl: URL? {
+        URL(string: photo)
+    }
+}

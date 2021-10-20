@@ -31,7 +31,7 @@
 		978ED2D3271B71E300BE96A1 /* ProviderDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978ED2D2271B71E300BE96A1 /* ProviderDataService.swift */; };
 		978ED2D6271B773400BE96A1 /* RealmGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978ED2D5271B773400BE96A1 /* RealmGroup.swift */; };
 		978ED2D8271C93FB00BE96A1 /* RealmFriend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978ED2D7271C93FB00BE96A1 /* RealmFriend.swift */; };
-		978ED2DA271CA54F00BE96A1 /* RealmPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978ED2D9271CA54F00BE96A1 /* RealmPhoto.swift */; };
+		978ED2DA271CA54F00BE96A1 /* RealmPhotoGallery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978ED2D9271CA54F00BE96A1 /* RealmPhotoGallery.swift */; };
 		97CAE33B2704EB7300BC9EA1 /* AuthData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97CAE33A2704EB7300BC9EA1 /* AuthData.swift */; };
 		97E9CC6026F524B20030337B /* NavigationAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E9CC5F26F524B20030337B /* NavigationAnimator.swift */; };
 		97E9CC6426FBB2060030337B /* CusomNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E9CC6326FBB2060030337B /* CusomNavigationController.swift */; };
@@ -70,7 +70,7 @@
 		978ED2D2271B71E300BE96A1 /* ProviderDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProviderDataService.swift; sourceTree = "<group>"; };
 		978ED2D5271B773400BE96A1 /* RealmGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmGroup.swift; sourceTree = "<group>"; };
 		978ED2D7271C93FB00BE96A1 /* RealmFriend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmFriend.swift; sourceTree = "<group>"; };
-		978ED2D9271CA54F00BE96A1 /* RealmPhoto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmPhoto.swift; sourceTree = "<group>"; };
+		978ED2D9271CA54F00BE96A1 /* RealmPhotoGallery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmPhotoGallery.swift; sourceTree = "<group>"; };
 		97CAE33A2704EB7300BC9EA1 /* AuthData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthData.swift; sourceTree = "<group>"; };
 		97E9CC5F26F524B20030337B /* NavigationAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationAnimator.swift; sourceTree = "<group>"; };
 		97E9CC6326FBB2060030337B /* CusomNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CusomNavigationController.swift; sourceTree = "<group>"; };
@@ -185,7 +185,7 @@
 			children = (
 				978ED2D5271B773400BE96A1 /* RealmGroup.swift */,
 				978ED2D7271C93FB00BE96A1 /* RealmFriend.swift */,
-				978ED2D9271CA54F00BE96A1 /* RealmPhoto.swift */,
+				978ED2D9271CA54F00BE96A1 /* RealmPhotoGallery.swift */,
 			);
 			path = Realm;
 			sourceTree = "<group>";
@@ -321,7 +321,7 @@
 				9702BAC226CC791C009EC1A2 /* GroupTableViewController.swift in Sources */,
 				97585848270C4C31001CF35A /* VKResponse.swift in Sources */,
 				9702BAC026CC78F4009EC1A2 /* FriendTableViewController.swift in Sources */,
-				978ED2DA271CA54F00BE96A1 /* RealmPhoto.swift in Sources */,
+				978ED2DA271CA54F00BE96A1 /* RealmPhotoGallery.swift in Sources */,
 				97E9CC6426FBB2060030337B /* CusomNavigationController.swift in Sources */,
 				975C833226D99667001A8D80 /* UIView.swift in Sources */,
 				97FC943A26EAB1E6000046BE /* PhotoSliderViewController.swift in Sources */,

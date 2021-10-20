@@ -6,24 +6,20 @@
 //
 
 import Nuke
+import RealmSwift
 import UIKit
 
 struct Section {
     let letter: String
-    let data: [Friend]
+    let data: [RealmFriend]
 }
 
 class FriendTableViewController: UITableViewController {
     @IBOutlet var FriendTableView: UITableView!
 
+    private var friendToken: NotificationToken?
     private let realmProvider = ProviderDataService()
-    private var friend = [Friend]() {
-        didSet {
-            let groupedDictionary = Dictionary(grouping: friend, by: { String($0.lastName.prefix(1)) })
-            let keys = groupedDictionary.keys.sorted()
-            sections = keys.map { Section(letter: $0, data: groupedDictionary[$0]!) }
-        }
-    }
+    private var friend: Results<RealmFriend>?
 
     private var sections = [Section]() {
         didSet {
@@ -33,19 +29,39 @@ class FriendTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        friend = try? RealmService
+            .load(typeOf: RealmFriend.self)
+    }
+
+    override func viewDidAppear(_: Bool) {
         loadData()
     }
 
     public func loadData() {
-        realmProvider.loadFriends { [weak self] resp in
-            guard let self = self else { return }
-            self.friend = resp
+        realmProvider.loadFriends()
+        friendToken = friend?.observe { [weak self] changes in
+            switch changes {
+            case .initial:
+                self?.loadSection()
+            case .update:
+                self?.loadSection()
+            case let .error(error):
+                print(error)
+            }
         }
     }
 
-    private func getRowData(indexPath: IndexPath) -> Friend {
+    private func getRowData(indexPath: IndexPath) -> RealmFriend {
         let section = sections[indexPath.section]
         return section.data[indexPath.row]
+    }
+
+    private func loadSection() {
+        guard let friend = friend else { return }
+        let groupedDictionary = Dictionary(grouping: friend, by: { String($0.lastName.prefix(1)) })
+        let keys = groupedDictionary.keys.sorted()
+        sections = keys.map { Section(letter: $0, data: groupedDictionary[$0]!) }
     }
 }
 
@@ -95,10 +111,7 @@ extension FriendTableViewController {
         else { return }
         let indexPath = sender as! IndexPath
         let rowData = getRowData(indexPath: indexPath)
-
-        realmProvider.loadPhoto(ownerId: Int(rowData.id)) { resp in
-            galleryController.loadData(items: resp)
-        }
+        galleryController.ownerId = rowData.userId
     }
 
     override func numberOfSections(in _: UITableView) -> Int {

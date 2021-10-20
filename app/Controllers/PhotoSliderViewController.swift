@@ -6,6 +6,7 @@
 //
 
 import Nuke
+import RealmSwift
 import UIKit
 
 enum PhotoSwipe {
@@ -20,7 +21,7 @@ final class PhotoSliderViewController: UIViewController {
     private lazy var targetView = UIImageView()
 
     private var currentImageIndex: Int = 0
-    private var images = [PhotoGallery]()
+    private var gallery: Results<RealmPhotoGallery>?
     private let animateTime = 1.0
 
     override func viewDidLoad() {
@@ -44,8 +45,8 @@ final class PhotoSliderViewController: UIViewController {
         targetView = UIImageView(frame: sliderArea.frame)
         sourseView = UIImageView(frame: sliderArea.frame)
 
-        sourseView.contentMode = .scaleAspectFill
-        targetView.contentMode = .scaleAspectFill
+        sourseView.contentMode = .scaleAspectFit
+        targetView.contentMode = .scaleAspectFit
 
         sliderArea.addSubview(targetView)
         sliderArea.addSubview(sourseView)
@@ -53,8 +54,8 @@ final class PhotoSliderViewController: UIViewController {
         showSlide(direction: nil)
     }
 
-    func setImages(images: [PhotoGallery], indexAt: Int) {
-        self.images = images
+    func setImages(gallery: Results<RealmPhotoGallery>, indexAt: Int) {
+        self.gallery = gallery
         currentImageIndex = indexAt
     }
 
@@ -94,7 +95,7 @@ final class PhotoSliderViewController: UIViewController {
                 return
             }
 
-            guard let url = images[targetImageIndex].items.getImageByType(type: "x")?.photoUrl
+            guard let url = gallery?[targetImageIndex].getImageUrlByType(type: "x")
             else { return }
 
             Nuke.loadImage(
@@ -146,8 +147,8 @@ final class PhotoSliderViewController: UIViewController {
             }
 
         } else {
-            guard let url = images[getNextImageIndex(direction: direction)]
-                .items.getImageByType(type: "x")?.photoUrl
+            guard let url = gallery?[getNextImageIndex(direction: direction)]
+                .getImageUrlByType(type: "x")
             else { return }
 
             Nuke.loadImage(
@@ -167,7 +168,7 @@ final class PhotoSliderViewController: UIViewController {
                 currentImageIndex -= 1
             }
         case .left:
-            if images.count - 1 > currentImageIndex {
+            if let cn = gallery?.count, cn - 1 > currentImageIndex {
                 currentImageIndex += 1
             }
         default:

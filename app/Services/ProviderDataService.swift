@@ -11,9 +11,11 @@ class ProviderDataService {
     let networkService = NetworkService()
     let syncTimeout = 60.0
 
-    func loadFriends(forceReload: Bool = false, completion: @escaping ([Friend]) -> Void) {
-        let realmFriend = try? RealmService.load(typeOf: RealmFriend.self)
-        if checkSync(forKey: "friend") || forceReload {
+    // MARK: Синхронизация друзей
+
+    func loadFriends() {
+        if checkSync(forKey: "friend") {
+            let realmFriend = try? RealmService.load(typeOf: RealmFriend.self)
             networkService.getFriends { resp in
                 do {
                     let friendResult = resp.map { RealmFriend(friend: $0) }
@@ -23,34 +25,21 @@ class ProviderDataService {
                             }
                             return true
                         }
-                    completion(resp)
+
                     try RealmService.save(items: friendResult)
 
                 } catch {
                     print("error RealmFriend: ", error)
                 }
             }
-        } else {
-            guard let friendResult = realmFriend else { return }
-            var result = [Friend]()
-            for friendItem in friendResult {
-                result.append(Friend(
-                    id: friendItem.userId,
-                    firstName: friendItem.firstName,
-                    lastName: friendItem.lastName,
-                    nickName: friendItem.nickName,
-                    photo: friendItem.photo,
-                    domain: friendItem.domain,
-                    sex: friendItem.sex
-                ))
-            }
-            completion(result)
         }
     }
 
-    func loadGroups(forceReload: Bool = false, completion: @escaping ([Group]) -> Void) {
-        let realmGroup = try? RealmService.load(typeOf: RealmGroup.self)
-        if checkSync(forKey: "group") || forceReload {
+    // MARK: Синхронизация групп
+
+    func loadGroups() {
+        if checkSync(forKey: "group") {
+            let realmGroup = try? RealmService.load(typeOf: RealmGroup.self)
             networkService.getGroups { resp in
                 do {
                     let groupResult = resp.map { RealmGroup(group: $0) }
@@ -60,58 +49,48 @@ class ProviderDataService {
                             }
                             return true
                         }
-                    completion(resp)
                     try RealmService.save(items: groupResult)
 
                 } catch {
                     print("error RealmGroup: ", error)
                 }
             }
-        } else {
-            guard let groupResult = realmGroup else { return }
-            var result = [Group]()
-            for groupItem in groupResult {
-                result.append(Group(
-                    id: groupItem.groupId,
-                    name: groupItem.name,
-                    screenName: groupItem.screenName,
-                    photo: groupItem.photo,
-                    description: groupItem.text
-                ))
-            }
-            completion(result)
         }
     }
 
-    func leaveGroup(group: Group, completion: @escaping (Bool) -> Void) {
+    // MARK: Удаление группы
+
+    func leaveGroup(group: RealmGroup) {
         networkService.leaveGroup(
-            groupId: Int(group.id)
+            groupId: Int(group.groupId)
         ) { codeResp in
             if codeResp == 1 {
                 let objectsToDelete = try? RealmService.load(typeOf: RealmGroup.self)
-                    .filter("groupId = %f", group.id)
+                    .filter("groupId = %f", group.groupId)
+
                 guard let item = objectsToDelete else { return }
                 try? RealmService.delete(object: item)
             }
-            completion(true)
         }
     }
 
+    // MARK: Добавление в группу
+
     func joinToGroup(group: Group) {
-        networkService.joinToGroup(
-            groupId: Int(group.id)
-        ) { codeResp in
+        networkService.joinToGroup(groupId: Int(group.id)) { codeResp in
             if codeResp == 1 {
-                self.loadGroups(forceReload: true, completion: { _ in })
+                try? RealmService.save(items: [RealmGroup(group: group)])
             }
         }
     }
 
-    func loadPhoto(forceReload: Bool = false, ownerId: Int, completion: @escaping ([PhotoGallery]) -> Void) {
-        let realmPhotoGallery = try? RealmService.load(typeOf: RealmPhotoGallery.self)
-            .filter("ownerId = %f", ownerId)
+    // MARK: Синхронизация фотографий
 
-        if checkSync(forKey: "photo_\(ownerId)") || forceReload {
+    func loadPhoto(ownerId: Int) {
+        if checkSync(forKey: "photo_\(ownerId)") {
+            let realmPhotoGallery = try? RealmService.load(typeOf: RealmPhotoGallery.self)
+                .filter("ownerId = %f", ownerId)
+
             networkService.getPhotos(ownerId: ownerId) { resp in
                 do {
                     let galleryResult = resp.map { RealmPhotoGallery(gallery: $0) }
@@ -121,36 +100,11 @@ class ProviderDataService {
                             }
                             return true
                         }
-                    completion(resp)
                     try RealmService.save(items: galleryResult)
-
                 } catch {
                     print("error RealmPhotoGallery: ", error)
                 }
             }
-        } else {
-            guard let galleryResult = realmPhotoGallery else { return }
-            var result = [PhotoGallery]()
-            for galleryItem in galleryResult {
-                var imageItems = [ImageItem]()
-
-                // fetch images
-                for item in galleryItem.images {
-                    imageItems.append(ImageItem(
-                        type: item.key,
-                        url: item.value
-                    ))
-                }
-
-                result.append(PhotoGallery(
-                    id: galleryItem.galleryId,
-                    albumId: galleryItem.albumId,
-                    ownerId: galleryItem.ownerId,
-                    text: galleryItem.text,
-                    items: imageItems
-                ))
-            }
-            completion(result)
         }
     }
 

@@ -5,19 +5,15 @@
 //  Created by Егор Кожемин on 18.08.2021.
 //
 
+import RealmSwift
 import UIKit
 
 class GroupTableViewController: UITableViewController {
     @IBOutlet var GroupTableView: UITableView!
     @IBOutlet var tableViewHeader: GroupTableHeader!
 
-    private var group = [Group]() {
-        didSet {
-            setHeaderLabel()
-            tableView.reloadData()
-        }
-    }
-
+    private var group: Results<RealmGroup>?
+    private var groupToken: NotificationToken?
     private let realmProvider = ProviderDataService()
 
     @IBAction func addGroup(segue: UIStoryboardSegue) {
@@ -26,41 +22,50 @@ class GroupTableViewController: UITableViewController {
               let index = vc.tableView.indexPathForSelectedRow?.row
         else { return }
 
-        realmProvider.networkService.joinToGroup(
-            groupId: Int(vc.getGroup()[index].id)
-        ) { [weak self] codeResp in
-            guard let self = self else { return }
-            if codeResp == 1 {
-                self.loadData(forceReload: true)
-            }
-        }
+        let newGroup = vc.getGroup()[index]
+        realmProvider.joinToGroup(group: newGroup)
     }
 
     override func viewDidLoad() {
         // header image
         tableViewHeader.imageView.image = UIImage(named: "groupHeader")
         tableViewHeader.imageView.contentMode = .scaleAspectFill
+
+        group = try? RealmService
+            .load(typeOf: RealmGroup.self)
     }
 
-    override func viewWillAppear(_: Bool) {
+    override func viewDidAppear(_: Bool) {
         loadData()
     }
 
-    public func loadData(forceReload: Bool = false) {
-        realmProvider.loadGroups(forceReload: forceReload) { [weak self] resp in
-            guard let self = self else { return }
-            self.group = resp
+    public func loadData(forceReload _: Bool = false) {
+        realmProvider.loadGroups()
+        groupToken = group?.observe { [weak self] changes in
+            switch changes {
+            case .initial:
+                print("loadData - initial")
+            case .update:
+                self?.reloadView()
+            case let .error(error):
+                print(error)
+            }
         }
     }
 
     private func setHeaderLabel() {
-        tableViewHeader.labelCountGroup.text = "Всего групп: \(group.count)"
+        tableViewHeader.labelCountGroup.text = "Всего групп: \(group?.count ?? 0)"
+    }
+
+    private func reloadView() {
+        tableView.reloadData()
+        setHeaderLabel()
     }
 }
 
 extension GroupTableViewController {
     override func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
-        return group.count
+        return group?.count ?? 0
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -71,7 +76,9 @@ extension GroupTableViewController {
             cell = UITableViewCell(style: .default, reuseIdentifier: "GroupCell")
         }
 
-        configGroupCell(cell: &cell, for: indexPath, item: group)
+        guard let currentGroup = group?[indexPath.row] else { return UITableViewCell() }
+        configGroupCell(cell: &cell, group: currentGroup)
+
         return cell
     }
 }
@@ -91,13 +98,8 @@ extension GroupTableViewController {
                     title: NSLocalizedString("OK", comment: "Default action"),
                     style: .destructive,
                     handler: { _ in
-                        self.realmProvider.leaveGroup(group: self.group[indexPath.row]) {
-                            [weak self] codeResp in
-                            guard let self = self else { return }
-                            if codeResp {
-                                self.loadData()
-                            }
-                        }
+                        guard let currentGroup = self.group?[indexPath.row] else { return }
+                        self.realmProvider.leaveGroup(group: currentGroup)
                     }
                 )
             )
