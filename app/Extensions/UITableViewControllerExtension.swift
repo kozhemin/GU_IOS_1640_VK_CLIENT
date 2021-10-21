@@ -5,16 +5,16 @@
 //  Created by Егор Кожемин on 24.08.2021.
 //
 import Nuke
+import RealmSwift
 import UIKit
 
 extension UITableViewController {
-    func configGroupCell(cell: inout UITableViewCell, for indexPath: IndexPath, item: [Group]) {
+    func configGroupCell(cell: inout UITableViewCell, group: RealmGroup) {
         var conf = cell.defaultContentConfiguration()
-        let itemGroup = item[indexPath.row]
-        conf.text = itemGroup.name
-        conf.secondaryText = itemGroup.description
+        conf.text = group.name
+        conf.secondaryText = group.text
 
-        if let photoUrl = itemGroup.photoUrl {
+        if let photoUrl = group.photoUrl {
             // Nuke так и не завелось :-(
 //            let imageView = UIImageView()
 //            Nuke.loadImage(

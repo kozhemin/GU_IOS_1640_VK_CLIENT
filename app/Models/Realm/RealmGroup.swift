@@ -36,3 +36,9 @@ extension RealmGroup {
         text = group.description
     }
 }
+
+extension RealmGroup {
+    var photoUrl: URL? {
+        URL(string: photo)
+    }
+}

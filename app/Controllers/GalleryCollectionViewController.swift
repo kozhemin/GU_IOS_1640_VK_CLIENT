@@ -5,38 +5,56 @@
 //  Created by Егор Кожемин on 18.08.2021.
 //
 
+import RealmSwift
 import UIKit
 
 private let reuseIdentifier = "galleryCell"
 
 class GalleryCollectionViewController: UICollectionViewController {
-    private var galleryItem = [PhotoGallery]() {
-        didSet {
-            collectionView.reloadData()
-        }
-    }
-
-    func loadData(items: [PhotoGallery]) {
-        galleryItem = items
-    }
+    public var ownerId: Double = 0
+    private var galleryToken: NotificationToken?
+    private var gallery: Results<RealmPhotoGallery>?
+    private let realmProvider = ProviderDataService()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        gallery = try? RealmService
+            .load(typeOf: RealmPhotoGallery.self)
+            .filter("ownerId = %f", ownerId)
+    }
+
+    override func viewDidAppear(_: Bool) {
+        loadData()
+    }
+
+    public func loadData() {
+        realmProvider.loadPhoto(ownerId: Int(ownerId))
+        galleryToken = gallery?.observe { [weak self] changes in
+            switch changes {
+            case .initial:
+                self?.collectionView.reloadData()
+            case .update:
+                self?.collectionView.reloadData()
+            case let .error(error):
+                print(error)
+            }
+        }
     }
 
     override func collectionView(_: UICollectionView, numberOfItemsInSection _: Int) -> Int {
-        return galleryItem.count
+        return gallery?.count ?? 0
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: reuseIdentifier,
             for: indexPath
-        ) as? GalleryCollectionViewCell
+        ) as? GalleryCollectionViewCell,
+            let imageUrl = gallery?[indexPath.item].getImageUrlByType(type: "x")
         else { return UICollectionViewCell() }
 
-        cell.configure(item: galleryItem[indexPath.item])
-
+        cell.configure(url: imageUrl)
         return cell
     }
 
@@ -48,10 +66,11 @@ class GalleryCollectionViewController: UICollectionViewController {
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard let sliderVc = segue.destination as? PhotoSliderViewController
+        guard let sliderVc = segue.destination as? PhotoSliderViewController,
+              let gallery = gallery
         else { return }
 
         let indexPath = sender as! IndexPath
-        sliderVc.setImages(images: galleryItem, indexAt: indexPath.row)
+        sliderVc.setImages(gallery: gallery, indexAt: indexPath.row)
     }
 }

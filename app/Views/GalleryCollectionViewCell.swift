@@ -12,17 +12,10 @@ class GalleryCollectionViewCell: UICollectionViewCell {
     @IBOutlet var galleryLabel: UILabel!
     @IBOutlet var galleryImage: UIImageView!
 
-    func configure(item: PhotoGallery) {
-        galleryLabel.text = item.description
-
-        if item.items.count > 0,
-           let sImage = item.items.getImageByType(type: "s"),
-           let url = sImage.photoUrl
-        {
-            Nuke.loadImage(
-                with: url,
-                into: galleryImage
-            )
-        }
+    func configure(url: URL) {
+        Nuke.loadImage(
+            with: url,
+            into: galleryImage
+        )
     }
 }
