@@ -5,6 +5,7 @@
 //  Created by Егор Кожемин on 13.08.2021.
 //
 
+import FirebaseAuth
 import UIKit
 
 class LoginViewController: UIViewController {
@@ -12,6 +13,7 @@ class LoginViewController: UIViewController {
     @IBOutlet var passwordField: UITextField!
     @IBOutlet var scrollView: UIScrollView!
     @IBOutlet var loadingView: loadingIndicatorView!
+    private var handler: AuthStateDidChangeListenerHandle?
 
     lazy var navigationAnimator = Animator()
 
@@ -33,6 +35,18 @@ class LoginViewController: UIViewController {
 
         // Запуск анимации индикатора
         loadingView.indicatorAnimation()
+
+        handler = Auth.auth().addStateDidChangeListener { [weak self] _, user in
+            if user != nil {
+                let navController = UIStoryboard(
+                    name: "Main",
+                    bundle: nil
+                )
+                .instantiateViewController(withIdentifier: "MainNavController")
+                navController.transitioningDelegate = self
+                self?.present(navController, animated: true)
+            }
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -51,26 +65,27 @@ class LoginViewController: UIViewController {
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
 
+    // MARK: firebase user - admin@admin.com / admin123
+
     @IBAction func login(_: Any) {
-        if isValid() {
-            showAlert(type: .success)
-            let navController = UIStoryboard(
-                name: "Main",
-                bundle: nil
-            )
-            .instantiateViewController(withIdentifier: "MainNavController")
-            navController.transitioningDelegate = self
-            present(navController, animated: true)
-        } else {
-            showAlert(type: .error)
+        guard
+            let username = loginField.text,
+            let password = passwordField.text,
+            !username.isEmpty,
+            !password.isEmpty
+        else { return showAlert(type: .error, message: "Incorrect login or password") }
+
+        Auth.auth().signIn(
+            withEmail: username,
+            password: password
+        ) { [weak self] _, authError in
+            if let error = authError {
+                self?.showAlert(type: .error, message: error.localizedDescription)
+            }
         }
     }
 
-    func isValid() -> Bool {
-        loginField.text == "admin" && passwordField.text == "admin"
-    }
-
-    private func showAlert(type: AlertType) {
+    private func showAlert(type: AlertType, message: String) {
         switch type {
         case .error:
             loginField.layer.borderWidth = 1
@@ -78,6 +93,24 @@ class LoginViewController: UIViewController {
 
             passwordField.layer.borderWidth = 1
             passwordField.layer.borderColor = UIColor.systemPink.cgColor
+
+            let alertController = UIAlertController(
+                title: "Ошибка авторизации",
+                message: message,
+                preferredStyle: .alert
+            )
+
+            let alertItem = UIAlertAction(
+                title: "Принял",
+                style: .cancel
+            ) { _ in
+                self.passwordField.text = ""
+            }
+
+            alertController.addAction(alertItem)
+            present(alertController,
+                    animated: true,
+                    completion: nil)
 
         case .success:
             loginField.layer.borderWidth = 1

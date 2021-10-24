@@ -43,12 +43,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mpd-Tz-2H6" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="321" y="-61"/>
+            <point key="canvasLocation" x="-703" y="-61"/>
         </scene>
         <!--Login View Controller-->
         <scene sceneID="g6C-iA-cpS">
             <objects>
-                <viewController id="T66-FK-Hlu" customClass="LoginViewController" customModule="app" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LoginController" id="T66-FK-Hlu" customClass="LoginViewController" customModule="app" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="cmP-O1-NbF">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -131,7 +131,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hIJ-Y1-uKb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-889" y="-61"/>
+            <point key="canvasLocation" x="310" y="-61"/>
         </scene>
         <!--Group Search-->
         <scene sceneID="Hyj-gT-wzk">

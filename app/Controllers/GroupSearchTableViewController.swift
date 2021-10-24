@@ -5,6 +5,7 @@
 //  Created by Егор Кожемин on 18.08.2021.
 //
 
+import FirebaseDatabase
 import UIKit
 
 class GroupSearchTableViewController: UITableViewController {
@@ -18,7 +19,7 @@ class GroupSearchTableViewController: UITableViewController {
     }
 
     private let realmProvider = ProviderDataService()
-
+    private let ref = Database.database().reference(withPath: "VkQueryLog")
     override func viewDidLoad() {
         searchField.delegate = self
     }
@@ -113,14 +114,30 @@ extension GroupSearchTableViewController {
 }
 
 extension GroupSearchTableViewController: UISearchBarDelegate {
+    static var dtQuery = Int(NSDate().timeIntervalSince1970)
     func searchBar(_: UISearchBar, textDidChange searchText: String) {
         if searchText.isEmpty {
             return loadData()
         }
 
-        realmProvider.networkService.searchGroups(query: searchText.lowercased()) { [weak self] resp in
+        let q = searchText.lowercased()
+        realmProvider.networkService.searchGroups(query: q) { [weak self] resp in
             guard let self = self else { return }
             self.group = resp
+        }
+
+        // Firebase search query log
+        resetDtQuery()
+        let vkUserLog = FirebaseVkQueryLog(userId: AuthData.share.userId, query: q)
+        let cityRef = ref.child(String(GroupSearchTableViewController.dtQuery))
+        cityRef.setValue(vkUserLog.toAnyObject())
+    }
+
+    private func resetDtQuery() {
+        let delay = 5
+        let currentDt = Int(NSDate().timeIntervalSince1970)
+        if GroupSearchTableViewController.dtQuery + delay < currentDt {
+            GroupSearchTableViewController.dtQuery = Int(NSDate().timeIntervalSince1970)
         }
     }
 }

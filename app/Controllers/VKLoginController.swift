@@ -5,6 +5,7 @@
 //  Created by Егор Кожемин on 02.10.2021.
 //
 
+import FirebaseDatabase
 import UIKit
 import WebKit
 
@@ -32,6 +33,7 @@ class VKLoginController: UIViewController {
     }()
 
     private lazy var request = URLRequest(url: urlComponents.url!)
+    private let ref = Database.database().reference(withPath: "vkUserAuthLog")
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -72,11 +74,20 @@ extension VKLoginController: WKNavigationDelegate {
             AuthData.share.userId = userID
             AuthData.share.token = token
 
+            // Firebase auth log
+            let dt = Int(NSDate().timeIntervalSince1970)
+            let vkUserLog = FirebaseVkUserAuthLog(
+                userId: userID,
+                dt: dt
+            )
+            let cityRef = ref.child(String(dt))
+            cityRef.setValue(vkUserLog.toAnyObject())
+
             let navController = UIStoryboard(
                 name: "Main",
                 bundle: nil
             )
-            .instantiateViewController(withIdentifier: "MainNavController")
+            .instantiateViewController(withIdentifier: "LoginController")
             navController.modalPresentationStyle = .fullScreen
             present(navController, animated: true)
         }

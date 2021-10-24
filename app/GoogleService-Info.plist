@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>245844039990-9fqr5gpr3d5945758hefaupel7par9q4.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.245844039990-9fqr5gpr3d5945758hefaupel7par9q4</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCN_ds-bKToNHRbh27-_NOEPaCWIsOje78</string>
+	<key>GCM_SENDER_ID</key>
+	<string>245844039990</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>kozhemin.app</string>
+	<key>PROJECT_ID</key>
+	<string>gu-ios-1640-vk-client</string>
+	<key>STORAGE_BUCKET</key>
+	<string>gu-ios-1640-vk-client.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:245844039990:ios:6756d673f5294ad74cfb97</string>
+</dict>
+</plist>
