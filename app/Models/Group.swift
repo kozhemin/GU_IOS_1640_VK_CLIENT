@@ -5,6 +5,7 @@
 //  Created by Егор Кожемин on 24.08.2021.
 //
 import UIKit
+import SwiftUI
 
 struct GroupItems: Codable {
     var items: [Group]
@@ -29,5 +30,15 @@ struct Group: Codable {
 extension Group {
     var photoUrl: URL? {
         URL(string: photo)
+    }
+}
+
+extension Group {
+    func toAnyObject() -> [String: Any] {
+        [
+            "id": id,
+            "name": name,
+            "description": description
+        ]
     }
 }

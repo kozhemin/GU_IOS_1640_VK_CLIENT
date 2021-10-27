@@ -7,11 +7,13 @@
 
 import FirebaseDatabase
 import UIKit
+import FirebaseFirestore
 
 class GroupSearchTableViewController: UITableViewController {
     @IBOutlet var GroupSearchTableView: UITableView!
     @IBOutlet var searchField: UISearchBar!
 
+    private let firestore = Firestore.firestore()
     private var group = [Group]() {
         didSet {
             GroupSearchTableView.reloadData()
@@ -37,6 +39,18 @@ class GroupSearchTableViewController: UITableViewController {
         realmProvider.networkService.searchGroups(query: defaultQueryString) { [weak self] resp in
             guard let self = self else { return }
             self.group = resp
+            self.AddGroupToFirestoreLog()
+        }
+    }
+    
+    // MARK: Логирование поисковой выдачи в хранилище Frestore
+    
+    private func AddGroupToFirestoreLog() {
+        for groupItem in self.group {
+        firestore
+            .collection("vkFoundGroupsLog")
+            .document("\(groupItem.id)")
+            .setData(groupItem.toAnyObject())
         }
     }
 }
@@ -124,6 +138,7 @@ extension GroupSearchTableViewController: UISearchBarDelegate {
         realmProvider.networkService.searchGroups(query: q) { [weak self] resp in
             guard let self = self else { return }
             self.group = resp
+            self.AddGroupToFirestoreLog()
         }
 
         // Firebase search query log

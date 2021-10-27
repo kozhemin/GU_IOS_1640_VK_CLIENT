@@ -9,5 +9,5 @@ target 'app' do
   pod 'FirebaseCore'
   pod 'Firebase/Auth'
   pod 'Firebase/Database'
-
+  pod 'Firebase/Firestore'
 end
