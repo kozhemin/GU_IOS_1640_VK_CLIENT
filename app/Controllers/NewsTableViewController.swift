@@ -5,10 +5,18 @@
 //  Created by Егор Кожемин on 10.11.2021.
 //
 
+import Nuke
 import UIKit
 
 class NewsTableViewController: UITableViewController {
-    private var sections = [NewsSection]()
+    private var sections = [NewsSection]() {
+        didSet {
+            tableView.reloadData()
+        }
+    }
+
+    private let networkService = NetworkService()
+    private var pullControl = UIRefreshControl()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,29 +26,70 @@ class NewsTableViewController: UITableViewController {
 
         registerNib()
         loadData()
+
+        pullControl.attributedTitle = NSAttributedString(string: "News refresh")
+        pullControl.addTarget(self, action: #selector(refresh(_:)), for: .valueChanged)
+        tableView.refreshControl = pullControl
     }
 
     func loadData() {
-        for item in demoNews {
-            var dataRow = [NewsDataRow]()
-            if !item.text.isEmpty {
-                dataRow.append(NewsDataRow(type: .text, text: item.text))
-            }
-            if !item.photo.isEmpty {
-                dataRow.append(NewsDataRow(type: .photo, photo: item.photo))
-            }
+        var sectionDataContent = [NewsSection]()
 
-            sections.append(NewsSection(
-                postId: item.postId,
-                date: item.date,
-                author: item.author,
-                comments: item.comments,
-                likes: item.likes,
-                views: item.views,
-                reposts: item.repost,
-                data: dataRow
-            )
-            )
+        networkService.getNews { [weak self] resp in
+            guard let self = self,
+                  resp.newsItems.items.count > 0
+            else { return }
+
+            for itemNews in resp.newsItems.items {
+                var authorTitle = ""
+                var authorPhoto: URL?
+                var dataRow = [NewsDataRow]()
+                var isDataRowFill = false
+
+                if let photoAttach = itemNews.attachments?[0].photo?.sizes {
+                    // cell type photo
+                    dataRow.append(NewsDataRow(type: .photo, photo: photoAttach.getImageByType(type: "x")?.photoUrl))
+                    isDataRowFill = true
+                }
+
+                if !(itemNews.text?.isEmpty ?? false) {
+                    // cell type text
+                    dataRow.append(NewsDataRow(type: .text, text: itemNews.text))
+                    isDataRowFill = true
+                }
+
+                if itemNews.sourceId > 0 {
+                    // profile
+                    if let profile = resp.profileItems.profiles.first(where: { $0.id == abs(itemNews.sourceId) }) {
+                        authorTitle = "\(profile.lastName) \(profile.firstName)"
+                        authorPhoto = profile.photoUrl
+                    }
+                } else {
+                    // group
+                    if let group = resp.groupItems.groups.first(where: { $0.id == abs(itemNews.sourceId) }) {
+                        authorTitle = group.name
+                        authorPhoto = group.photoUrl
+                    }
+                }
+
+                // default...
+                if !isDataRowFill {
+                    dataRow.append(NewsDataRow(type: .text, text: "Контент события не определен (.."))
+                }
+
+                sectionDataContent.append(NewsSection(
+                    postId: itemNews.postId,
+                    date: itemNews.postDate,
+                    author: authorTitle,
+                    authorPhoto: authorPhoto,
+                    comments: itemNews.comments?.count ?? 0,
+                    likes: itemNews.likes?.count ?? 0,
+                    views: itemNews.views?.count ?? 0,
+                    reposts: itemNews.reposts?.count ?? 0,
+                    data: dataRow
+                ))
+            }
+            self.sections = sectionDataContent
         }
     }
 
@@ -60,6 +109,11 @@ class NewsTableViewController: UITableViewController {
 
         let nibPhoto = UINib(nibName: "PhotoViewCell", bundle: nil)
         tableView.register(nibPhoto, forCellReuseIdentifier: "PhotoViewCell")
+    }
+
+    @objc func refresh(_: AnyObject) {
+        loadData()
+        refreshControl?.endRefreshing()
     }
 }
 
@@ -85,7 +139,13 @@ extension NewsTableViewController {
             return cell
         case .photo:
             let cell = tableView.dequeueReusableCell(withIdentifier: "PhotoViewCell", for: indexPath) as! PhotoViewCell
-            cell.postPhotoImageView.image = UIImage(named: sectionData.photo ?? "default-news-image")
+            if let url = sectionData.photo {
+                Nuke.loadImage(
+                    with: url,
+                    into: cell.postPhotoImageView
+                )
+            }
+
             return cell
         }
     }
@@ -103,7 +163,16 @@ extension NewsTableViewController {
         else { return nil }
 
         let sectionData = sections[section]
-        view.authorImageView.image = UIImage(named: sectionData.authorPhoto)
+
+        // clip image
+        view.authorImageView.clip(cornerRadius: 10, borderColor: UIColor.lightGray.cgColor)
+
+        if let url = sectionData.authorPhoto {
+            Nuke.loadImage(
+                with: url,
+                into: view.authorImageView
+            )
+        }
         view.authorNameLabel.text = sectionData.author
         view.datePostLabel.text = sectionData.date
 

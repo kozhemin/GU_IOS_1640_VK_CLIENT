@@ -17,7 +17,7 @@ struct Friend: Codable {
     var lastName: String
     var nickName: String?
     var photo: String
-    var domain: String
+    var domain: String?
     var sex: Int?
 
     enum CodingKeys: String, CodingKey {

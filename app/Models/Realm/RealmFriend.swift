@@ -15,7 +15,7 @@ class RealmFriend: Object {
     @Persisted var lastName: String
     @Persisted var nickName: String?
     @Persisted var photo: String
-    @Persisted var domain: String
+    @Persisted var domain: String?
     @Persisted var sex: Int?
 
     override class func primaryKey() -> String? {
