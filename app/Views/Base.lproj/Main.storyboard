@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="h4m-iE-R0b">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="h4m-iE-R0b">
     <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -131,7 +131,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hIJ-Y1-uKb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-889" y="-61"/>
+            <point key="canvasLocation" x="-727" y="-61"/>
         </scene>
         <!--Group Search-->
         <scene sceneID="Hyj-gT-wzk">
@@ -409,11 +409,42 @@
                     <connections>
                         <segue destination="z1f-E4-5cK" kind="relationship" relationship="viewControllers" id="qNj-Vh-Cyn"/>
                         <segue destination="0ZA-eR-qKH" kind="relationship" relationship="viewControllers" id="vN6-Lf-B5Q"/>
+                        <segue destination="zzh-K9-7hm" kind="relationship" relationship="viewControllers" id="F37-4r-Rvu"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BiP-0G-51p" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1241" y="-61"/>
+        </scene>
+        <!--News-->
+        <scene sceneID="YLg-RX-mKL">
+            <objects>
+                <tableViewController id="4To-JN-yLb" customClass="NewsTableViewController" customModule="app" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="fA3-6k-max">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="NewsCell" id="CIr-n4-75D">
+                                <rect key="frame" x="0.0" y="44.666666030883789" width="375" height="43.666667938232422"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="CIr-n4-75D" id="5Mj-X8-HHy">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.666667938232422"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="4To-JN-yLb" id="fAV-1V-cRR"/>
+                            <outlet property="delegate" destination="4To-JN-yLb" id="cxi-hv-OLG"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="News" id="Zvs-eL-kfZ"/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Kkw-9o-vRv" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2230" y="1125"/>
         </scene>
         <!--Groups-->
         <scene sceneID="jOC-iK-RMz">
@@ -526,9 +557,29 @@
             </objects>
             <point key="canvasLocation" x="2230" y="-567"/>
         </scene>
+        <!--News-->
+        <scene sceneID="BYu-cT-bDk">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="zzh-K9-7hm" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="News" image="newspaper" catalog="system" id="FXd-sQ-Kha"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="xg6-OU-dpy">
+                        <rect key="frame" x="0.0" y="44" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="4To-JN-yLb" kind="relationship" relationship="rootViewController" id="Z1v-r9-u0l"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="io3-ab-Iv2" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1241" y="1125"/>
+        </scene>
     </scenes>
     <resources>
         <image name="magnifyingglass" catalog="system" width="128" height="115"/>
+        <image name="newspaper" catalog="system" width="128" height="111"/>
         <image name="person.2" catalog="system" width="128" height="81"/>
         <image name="rectangle.stack.person.crop" catalog="system" width="128" height="122"/>
         <systemColor name="linkColor">
