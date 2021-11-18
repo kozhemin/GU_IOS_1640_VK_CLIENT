@@ -154,6 +154,51 @@ class NetworkService {
         }
     }
 
+    // MARK: Получение новостей
+
+    func getNews(completion: @escaping (NewsResponse) -> Void) {
+        guard let url = prepareUrl(
+            methodName: "newsfeed.get",
+            params: [
+                URLQueryItem(name: "count", value: "30"),
+                URLQueryItem(name: "filters", value: "post,photo,note"),
+                URLQueryItem(name: "fields", value: "first_name,last_name,photo_100,photo_50,description"),
+            ]
+        )
+        else { return }
+
+        let dispGroup = DispatchGroup()
+        var newsList = NewsItems(items: [NewsPost]())
+        var newsProfile = NewsProfiles(profiles: [Friend]())
+        var newsGroup = NewsGroups(groups: [Group]())
+
+        vkRequest(url: url) { resp in
+            DispatchQueue.global().async(group: dispGroup) {
+                do {
+                    newsList = try JSONDecoder()
+                        .decode(VKResponse<NewsItems>.self, from: resp).response
+
+                    newsProfile = try JSONDecoder()
+                        .decode(VKResponse<NewsProfiles>.self, from: resp).response
+
+                    newsGroup = try JSONDecoder()
+                        .decode(VKResponse<NewsGroups>.self, from: resp).response
+
+                } catch {
+                    print("getNews: Что-то пошло не так c JSONDecoder!", error.localizedDescription)
+                }
+            }
+
+            dispGroup.notify(queue: .main) {
+                completion(NewsResponse(
+                    newsItems: newsList,
+                    groupItems: newsGroup,
+                    profileItems: newsProfile
+                ))
+            }
+        }
+    }
+
     private func prepareUrl(methodName: String, params: [URLQueryItem]?) -> URL? {
         urlConstructor.path = "/method/" + methodName
         urlConstructor.queryItems = [

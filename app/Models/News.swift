@@ -7,53 +7,82 @@
 
 import Foundation
 
-struct NewsPost {
-    var postId: Int
-    var date: String
-    var author: String
-    var text: String
-    var photo: String
-    var comments: Int
-    var likes: Int
-    var views: Int
-    var repost: Int
+struct NewsResponse {
+    var newsItems: NewsItems
+    var groupItems: NewsGroups
+    var profileItems: NewsProfiles
 }
 
-let demoNews = [
-    NewsPost(
-        postId: 1,
-        date: "09.11.2021",
-        author: "Иванов Иван",
-        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-        photo: "news-1",
-        comments: 20,
-        likes: 10,
-        views: 500,
-        repost: 3
-    ),
-    NewsPost(
-        postId: 2,
-        date: "10.11.2021",
-        author: "Петров Петр",
-        text: "",
-        photo: "news-2",
-        comments: 12,
-        likes: 33,
-        views: 30,
-        repost: 10
-    ),
-    NewsPost(
-        postId: 3,
-        date: "11.11.2021",
-        author: "Сидоров Андрей",
-        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-        photo: "",
-        comments: 232,
-        likes: 211,
-        views: 44232,
-        repost: 4435
-    ),
-]
+// MARK: Структура новостей
+
+struct NewsItems: Codable {
+    var items: [NewsPost]
+}
+
+struct Cn: Codable {
+    var count: Int
+}
+
+struct NewsPhoto: Codable {
+    var id: Double
+    var date: Double
+    var sizes: [ImageItem]
+}
+
+struct NewsAttach: Codable {
+    var type: String
+    var photo: NewsPhoto?
+}
+
+struct NewsPost: Codable {
+    var postId: Double?
+    var sourceId: Double
+    var date: Double
+    var text: String?
+    var postType: String?
+    var comments: Cn?
+    var likes: Cn?
+    var views: Cn?
+    var reposts: Cn?
+    var attachments: [NewsAttach]?
+
+    enum CodingKeys: String, CodingKey {
+        case postId = "post_id"
+        case sourceId = "source_id"
+        case date
+        case text
+        case postType = "post_type"
+        case comments
+        case views
+        case reposts
+        case attachments
+    }
+}
+
+extension NewsPost {
+    var postDate: String {
+        let date = Date(timeIntervalSince1970: date)
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeStyle = DateFormatter.Style.medium
+        dateFormatter.dateStyle = DateFormatter.Style.medium
+        dateFormatter.timeZone = .current
+        return dateFormatter.string(from: date)
+    }
+}
+
+// MARK: Структура для групп
+
+struct NewsGroups: Codable {
+    var groups: [Group]
+}
+
+// MARK: Структура для профилей
+
+struct NewsProfiles: Codable {
+    var profiles: [Friend]
+}
+
+// MARK: Структура для секций
 
 enum CellType {
     case photo
@@ -62,23 +91,18 @@ enum CellType {
 
 struct NewsDataRow {
     var type: CellType
-    var photo: String?
+    var photo: URL?
     var text: String?
 }
 
 struct NewsSection {
-    var postId: Int
+    var postId: Double?
     var date: String
     var author: String
+    var authorPhoto: URL?
     var comments: Int
     var likes: Int
     var views: Int
     var reposts: Int
     var data: [NewsDataRow]
-}
-
-extension NewsSection {
-    var authorPhoto: String {
-        return "author-\(postId)"
-    }
 }
