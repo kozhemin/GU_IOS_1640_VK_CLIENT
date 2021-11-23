@@ -40,20 +40,22 @@ class ProviderDataService {
     func loadGroups() {
         if checkSync(forKey: "group") {
             let realmGroup = try? RealmService.load(typeOf: RealmGroup.self)
-            networkService.getGroups { resp in
-                do {
-                    let groupResult = resp.map { RealmGroup(group: $0) }
-                        .filter { item in
-                            if realmGroup?.contains(where: { $0.groupId == item.groupId }) ?? true {
-                                return false
-                            }
-                            return true
-                        }
-                    try RealmService.save(items: groupResult)
+            let operationQ = OperationQueue()
+            operationQ.maxConcurrentOperationCount = 10
 
-                } catch {
-                    print("error RealmGroup: ", error)
-                }
+            let fetchOperation = FetchDataGroupOperation()
+            let parseOperation = ParseDataGroupOperation()
+            let saveOperation = SaveDataGroupOperation(realmGroup: realmGroup)
+
+            parseOperation.addDependency(fetchOperation)
+            saveOperation.addDependency(parseOperation)
+
+            operationQ.addOperation(fetchOperation)
+            operationQ.addOperation(parseOperation)
+            operationQ.addOperation(saveOperation)
+
+            saveOperation.completionBlock = {
+                print("Save group success! Status: \(saveOperation.state)")
             }
         }
     }

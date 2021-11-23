@@ -15,6 +15,10 @@
 		9702BB3B26D58466009EC1A2 /* UITableViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9702BB3A26D58466009EC1A2 /* UITableViewControllerExtension.swift */; };
 		9702BB4026D6262F009EC1A2 /* Friend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9702BB3F26D6262F009EC1A2 /* Friend.swift */; };
 		9702BB4326D69E70009EC1A2 /* GalleryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9702BB4226D69E70009EC1A2 /* GalleryCollectionViewCell.swift */; };
+		97529DE82749775800B251E1 /* AsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97529DE72749775800B251E1 /* AsyncOperation.swift */; };
+		97529DEA2749792900B251E1 /* FetchDataGroupOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97529DE92749792900B251E1 /* FetchDataGroupOperation.swift */; };
+		97529DEC2749796300B251E1 /* ParseDataGroupOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97529DEB2749796300B251E1 /* ParseDataGroupOperation.swift */; };
+		97529DEE2749797500B251E1 /* SaveDataGroupOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97529DED2749797500B251E1 /* SaveDataGroupOperation.swift */; };
 		97585848270C4C31001CF35A /* VKResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97585847270C4C31001CF35A /* VKResponse.swift */; };
 		9758584D270CE40B001CF35A /* Nuke in Frameworks */ = {isa = PBXBuildFile; productRef = 9758584C270CE40B001CF35A /* Nuke */; };
 		975C832E26D9701D001A8D80 /* FriendTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975C832D26D9701D001A8D80 /* FriendTableViewCell.swift */; };
@@ -67,6 +71,10 @@
 		9702BB3A26D58466009EC1A2 /* UITableViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITableViewControllerExtension.swift; sourceTree = "<group>"; };
 		9702BB3F26D6262F009EC1A2 /* Friend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Friend.swift; sourceTree = "<group>"; };
 		9702BB4226D69E70009EC1A2 /* GalleryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryCollectionViewCell.swift; sourceTree = "<group>"; };
+		97529DE72749775800B251E1 /* AsyncOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsyncOperation.swift; sourceTree = "<group>"; };
+		97529DE92749792900B251E1 /* FetchDataGroupOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchDataGroupOperation.swift; sourceTree = "<group>"; };
+		97529DEB2749796300B251E1 /* ParseDataGroupOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParseDataGroupOperation.swift; sourceTree = "<group>"; };
+		97529DED2749797500B251E1 /* SaveDataGroupOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveDataGroupOperation.swift; sourceTree = "<group>"; };
 		97585847270C4C31001CF35A /* VKResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKResponse.swift; sourceTree = "<group>"; };
 		975C832D26D9701D001A8D80 /* FriendTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendTableViewCell.swift; sourceTree = "<group>"; };
 		975C832F26D992A9001A8D80 /* UIViewShadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewShadow.swift; sourceTree = "<group>"; };
@@ -185,6 +193,17 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		97529DE6274976C400B251E1 /* Operations */ = {
+			isa = PBXGroup;
+			children = (
+				97529DE72749775800B251E1 /* AsyncOperation.swift */,
+				97529DE92749792900B251E1 /* FetchDataGroupOperation.swift */,
+				97529DEB2749796300B251E1 /* ParseDataGroupOperation.swift */,
+				97529DED2749797500B251E1 /* SaveDataGroupOperation.swift */,
+			);
+			path = Operations;
+			sourceTree = "<group>";
+		};
 		975C833526E4047A001A8D80 /* TableHeaders */ = {
 			isa = PBXGroup;
 			children = (
@@ -256,6 +275,7 @@
 		97F6266726C6AD33001786F2 /* app */ = {
 			isa = PBXGroup;
 			children = (
+				97529DE6274976C400B251E1 /* Operations */,
 				97764F422707C96300C17CDD /* Services */,
 				97E9CC5E26F524560030337B /* UIHelpers */,
 				9702BB4126D69E34009EC1A2 /* Views */,
@@ -357,7 +377,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				97529DEA2749792900B251E1 /* FetchDataGroupOperation.swift in Sources */,
 				97764F462707CE4A00C17CDD /* VKLoginController.swift in Sources */,
+				97529DE82749775800B251E1 /* AsyncOperation.swift in Sources */,
 				9702BB4326D69E70009EC1A2 /* GalleryCollectionViewCell.swift in Sources */,
 				9764DFB5273C627200C60AF2 /* TextViewCell.swift in Sources */,
 				97F6266D26C6AD33001786F2 /* LoginViewController.swift in Sources */,
@@ -379,7 +401,9 @@
 				975C833026D992A9001A8D80 /* UIViewShadow.swift in Sources */,
 				9764DFAE273C504700C60AF2 /* News.swift in Sources */,
 				97F6266B26C6AD33001786F2 /* SceneDelegate.swift in Sources */,
+				97529DEE2749797500B251E1 /* SaveDataGroupOperation.swift in Sources */,
 				97764F48270A2F2800C17CDD /* AuthDataProtocol.swift in Sources */,
+				97529DEC2749796300B251E1 /* ParseDataGroupOperation.swift in Sources */,
 				97E9CC6026F524B20030337B /* NavigationAnimator.swift in Sources */,
 				97CAE33B2704EB7300BC9EA1 /* AuthData.swift in Sources */,
 				97858D14270E3EB90064AD67 /* PhotoGallery.swift in Sources */,
