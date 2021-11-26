@@ -6,6 +6,7 @@
 //
 import Foundation
 import RealmSwift
+import PromiseKit
 
 class ProviderDataService {
     let networkService = NetworkService()
@@ -14,23 +15,44 @@ class ProviderDataService {
     // MARK: Синхронизация друзей
 
     func loadFriends() {
+        
+        /*
+        Example promise usage:
+        ---------------------
+        firstly{
+            Promise.value("Hello world")
+        }.then { str -> Promise<String> in
+            print(str)
+            return Promise.value("Hello world2")
+        }.then { str2 ->Promise<Bool> in
+            print(str2)
+            return Promise.value(true)
+        }.ensure {
+            print("something that should happen whatever the outcome")
+        }.done { ret in
+             print("DONE: " , ret)
+        }.catch {
+            print("Error \($0)")
+        }
+        */
+        
         if checkSync(forKey: "friend") {
-            let realmFriend = try? RealmService.load(typeOf: RealmFriend.self)
-            networkService.getFriends { resp in
-                do {
+            let promiseData = FetchDataFriendPromise()
+            promiseData.getFriends()
+                .done { resp in
+                    let realmFriend = try? RealmService.load(typeOf: RealmFriend.self)
                     let friendResult = resp.map { RealmFriend(friend: $0) }
-                        .filter { item in
-                            if realmFriend?.contains(where: { $0.userId == item.userId }) ?? true {
-                                return false
-                            }
-                            return true
+                    .filter { item in
+                        if realmFriend?.contains(where: { $0.userId == item.userId }) ?? true {
+                            return false
                         }
-
-                    try RealmService.save(items: friendResult)
-
-                } catch {
-                    print("error RealmFriend: ", error)
-                }
+                        return true
+                    }
+                
+                try RealmService.save(items: friendResult)
+                
+            }.catch { error in
+                print("error RealmFriend: ", error.localizedDescription)
             }
         }
     }
