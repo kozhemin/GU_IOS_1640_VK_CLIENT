@@ -47,6 +47,8 @@
 		978ED2DA271CA54F00BE96A1 /* RealmPhotoGallery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978ED2D9271CA54F00BE96A1 /* RealmPhotoGallery.swift */; };
 		97B82DD8273B2FA6001FB8CD /* NewsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B82DD7273B2FA6001FB8CD /* NewsTableViewController.swift */; };
 		97CAE33B2704EB7300BC9EA1 /* AuthData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97CAE33A2704EB7300BC9EA1 /* AuthData.swift */; };
+		97E8024D275164A400521BF4 /* FetchDataFriendPromise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E8024C275164A400521BF4 /* FetchDataFriendPromise.swift */; };
+		97E80250275166DA00521BF4 /* PromiseKit in Frameworks */ = {isa = PBXBuildFile; productRef = 97E8024F275166DA00521BF4 /* PromiseKit */; };
 		97E9CC6026F524B20030337B /* NavigationAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E9CC5F26F524B20030337B /* NavigationAnimator.swift */; };
 		97E9CC6426FBB2060030337B /* CusomNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E9CC6326FBB2060030337B /* CusomNavigationController.swift */; };
 		97F6266926C6AD33001786F2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97F6266826C6AD33001786F2 /* AppDelegate.swift */; };
@@ -100,6 +102,7 @@
 		978ED2D9271CA54F00BE96A1 /* RealmPhotoGallery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmPhotoGallery.swift; sourceTree = "<group>"; };
 		97B82DD7273B2FA6001FB8CD /* NewsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsTableViewController.swift; sourceTree = "<group>"; };
 		97CAE33A2704EB7300BC9EA1 /* AuthData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthData.swift; sourceTree = "<group>"; };
+		97E8024C275164A400521BF4 /* FetchDataFriendPromise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchDataFriendPromise.swift; sourceTree = "<group>"; };
 		97E9CC5F26F524B20030337B /* NavigationAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationAnimator.swift; sourceTree = "<group>"; };
 		97E9CC6326FBB2060030337B /* CusomNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CusomNavigationController.swift; sourceTree = "<group>"; };
 		97F6266526C6AD33001786F2 /* app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = app.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -123,6 +126,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9775B321271A42C200210A4B /* RealmSwift in Frameworks */,
+				97E80250275166DA00521BF4 /* PromiseKit in Frameworks */,
 				9775B31F271A42C200210A4B /* Realm in Frameworks */,
 				9758584D270CE40B001CF35A /* Nuke in Frameworks */,
 			);
@@ -247,6 +251,14 @@
 			path = Realm;
 			sourceTree = "<group>";
 		};
+		97E8024B2751645900521BF4 /* Promise */ = {
+			isa = PBXGroup;
+			children = (
+				97E8024C275164A400521BF4 /* FetchDataFriendPromise.swift */,
+			);
+			path = Promise;
+			sourceTree = "<group>";
+		};
 		97E9CC5E26F524560030337B /* UIHelpers */ = {
 			isa = PBXGroup;
 			children = (
@@ -275,6 +287,7 @@
 		97F6266726C6AD33001786F2 /* app */ = {
 			isa = PBXGroup;
 			children = (
+				97E8024B2751645900521BF4 /* Promise */,
 				97529DE6274976C400B251E1 /* Operations */,
 				97764F422707C96300C17CDD /* Services */,
 				97E9CC5E26F524560030337B /* UIHelpers */,
@@ -313,6 +326,7 @@
 				9758584C270CE40B001CF35A /* Nuke */,
 				9775B31E271A42C200210A4B /* Realm */,
 				9775B320271A42C200210A4B /* RealmSwift */,
+				97E8024F275166DA00521BF4 /* PromiseKit */,
 			);
 			productName = app;
 			productReference = 97F6266526C6AD33001786F2 /* app.app */;
@@ -344,6 +358,7 @@
 			packageReferences = (
 				9758584B270CE40B001CF35A /* XCRemoteSwiftPackageReference "Nuke" */,
 				9775B31D271A42C200210A4B /* XCRemoteSwiftPackageReference "realm-cocoa" */,
+				97E8024E275166DA00521BF4 /* XCRemoteSwiftPackageReference "PromiseKit" */,
 			);
 			productRefGroup = 97F6266626C6AD33001786F2 /* Products */;
 			projectDirPath = "";
@@ -386,6 +401,7 @@
 				9702BAC226CC791C009EC1A2 /* GroupTableViewController.swift in Sources */,
 				97585848270C4C31001CF35A /* VKResponse.swift in Sources */,
 				9702BAC026CC78F4009EC1A2 /* FriendTableViewController.swift in Sources */,
+				97E8024D275164A400521BF4 /* FetchDataFriendPromise.swift in Sources */,
 				978ED2DA271CA54F00BE96A1 /* RealmPhotoGallery.swift in Sources */,
 				97E9CC6426FBB2060030337B /* CusomNavigationController.swift in Sources */,
 				975C833226D99667001A8D80 /* UIView.swift in Sources */,
@@ -636,6 +652,14 @@
 				minimumVersion = 10.17.0;
 			};
 		};
+		97E8024E275166DA00521BF4 /* XCRemoteSwiftPackageReference "PromiseKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mxcl/PromiseKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.16.2;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -653,6 +677,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 9775B31D271A42C200210A4B /* XCRemoteSwiftPackageReference "realm-cocoa" */;
 			productName = RealmSwift;
+		};
+		97E8024F275166DA00521BF4 /* PromiseKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 97E8024E275166DA00521BF4 /* XCRemoteSwiftPackageReference "PromiseKit" */;
+			productName = PromiseKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
