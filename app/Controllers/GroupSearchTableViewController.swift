@@ -54,19 +54,7 @@ extension GroupSearchTableViewController {
         }
 
         let currentGroup = group[indexPath.row]
-        var conf = cell.defaultContentConfiguration()
-
-        conf.text = currentGroup.name
-        conf.secondaryText = currentGroup.description
-
-        if let photoUrl = currentGroup.photoUrl {
-            let data = try? Data(contentsOf: photoUrl)
-            if data != nil {
-                conf.image = UIImage(data: data!)
-            }
-        }
-        cell.contentConfiguration = conf
-
+        configGroupCell(cell: &cell, group: currentGroup)
         return cell
     }
 }

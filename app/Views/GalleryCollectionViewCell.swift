@@ -13,6 +13,8 @@ class GalleryCollectionViewCell: UICollectionViewCell {
     @IBOutlet var galleryImage: UIImageView!
 
     func configure(url: URL) {
+        galleryImage.contentMode = .scaleAspectFill
+        galleryImage?.image = UIImage(named: "placeholder")
         Nuke.loadImage(
             with: url,
             into: galleryImage

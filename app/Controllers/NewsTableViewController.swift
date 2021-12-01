@@ -165,7 +165,7 @@ extension NewsTableViewController {
         let sectionData = sections[section]
 
         // clip image
-        view.authorImageView.clip(cornerRadius: 10, borderColor: UIColor.lightGray.cgColor)
+//        view.authorImageView.clip(cornerRadius: 10, borderColor: UIColor.lightGray.cgColor)
 
         if let url = sectionData.authorPhoto {
             Nuke.loadImage(

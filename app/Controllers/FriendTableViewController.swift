@@ -125,6 +125,19 @@ extension FriendTableViewController {
     override func tableView(_: UITableView, titleForHeaderInSection section: Int) -> String? {
         return sections[section].letter
     }
+
+    override func tableView(_: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let returnedView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 25))
+        let label = UILabel(frame: CGRect(x: 10, y: 0, width: view.frame.size.width, height: 25))
+
+        label.text = sections[section].letter
+        label.backgroundColor = .white
+        label.isOpaque = true
+        label.textColor = .black
+        returnedView.addSubview(label)
+
+        return returnedView
+    }
 }
 
 extension FriendTableViewController: UIGestureRecognizerDelegate {

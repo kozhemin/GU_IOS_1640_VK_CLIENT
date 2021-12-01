@@ -119,4 +119,8 @@ extension GroupTableViewController {
 
         return UISwipeActionsConfiguration(actions: [actionDelete])
     }
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.cellForRow(at: indexPath)?.setSelected(false, animated: true)
+    }
 }

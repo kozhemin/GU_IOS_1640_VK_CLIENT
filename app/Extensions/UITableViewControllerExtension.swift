@@ -10,24 +10,24 @@ import UIKit
 
 extension UITableViewController {
     func configGroupCell(cell: inout UITableViewCell, group: RealmGroup) {
-        var conf = cell.defaultContentConfiguration()
-        conf.text = group.name
-        conf.secondaryText = group.text
+        cell.textLabel?.backgroundColor = .white
+        cell.textLabel?.isOpaque = true
 
-        if let photoUrl = group.photoUrl {
-            // Nuke так и не завелось :-(
-//            let imageView = UIImageView()
-//            Nuke.loadImage(
-//                with: photoUrl,
-//                into: imageView)
-//            conf.image = imageView.image
+        cell.textLabel?.text = group.name
+        cell.detailTextLabel?.text = group.text
 
-            let data = try? Data(contentsOf: photoUrl)
-            if data != nil {
-                conf.image = UIImage(data: data!)
-            }
-        }
+        cell.imageView?.image = UIImage(named: "placeholder")
+        cell.imageView?.lazyLoadingImage(link: group.photo, contentMode: .scaleAspectFit)
+    }
 
-        cell.contentConfiguration = conf
+    func configGroupCell(cell: inout UITableViewCell, group: Group) {
+        cell.textLabel?.backgroundColor = .white
+        cell.textLabel?.isOpaque = true
+
+        cell.textLabel?.text = group.name
+        cell.detailTextLabel?.text = group.description
+
+        cell.imageView?.image = UIImage(named: "placeholder")
+        cell.imageView?.lazyLoadingImage(link: group.photo, contentMode: .scaleAspectFit)
     }
 }
