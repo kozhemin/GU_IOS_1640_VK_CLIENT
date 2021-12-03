@@ -11,6 +11,7 @@ struct NewsResponse {
     var newsItems: NewsItems
     var groupItems: NewsGroups
     var profileItems: NewsProfiles
+    var nextFrom: String
 }
 
 // MARK: Структура новостей
@@ -80,6 +81,15 @@ struct NewsGroups: Codable {
 
 struct NewsProfiles: Codable {
     var profiles: [Friend]
+}
+
+// MAARK: Структура для смещения новостей
+
+struct NewsNextFrom: Codable {
+    var nextFrom: String
+    enum CodingKeys: String, CodingKey {
+        case nextFrom = "next_from"
+    }
 }
 
 // MARK: Структура для секций

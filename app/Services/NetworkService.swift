@@ -156,14 +156,20 @@ class NetworkService {
 
     // MARK: Получение новостей
 
-    func getNews(completion: @escaping (NewsResponse) -> Void) {
+    func getNews(startFrom: String? = nil, completion: @escaping (NewsResponse) -> Void) {
+        var params = [
+            URLQueryItem(name: "count", value: "5"),
+            URLQueryItem(name: "filters", value: "post,photo,note"),
+            URLQueryItem(name: "fields", value: "first_name,last_name,photo_100,photo_50,description"),
+//            URLQueryItem(name: "start_time", value: "\(NSDate().timeIntervalSince1970 + 1)"),
+        ]
+
+        if startFrom != nil {
+            params.append(URLQueryItem(name: "start_from", value: startFrom))
+        }
         guard let url = prepareUrl(
             methodName: "newsfeed.get",
-            params: [
-                URLQueryItem(name: "count", value: "30"),
-                URLQueryItem(name: "filters", value: "post,photo,note"),
-                URLQueryItem(name: "fields", value: "first_name,last_name,photo_100,photo_50,description"),
-            ]
+            params: params
         )
         else { return }
 
@@ -171,6 +177,7 @@ class NetworkService {
         var newsList = NewsItems(items: [NewsPost]())
         var newsProfile = NewsProfiles(profiles: [Friend]())
         var newsGroup = NewsGroups(groups: [Group]())
+        var nextFrom = ""
 
         vkRequest(url: url) { resp in
             DispatchQueue.global().async(group: dispGroup) {
@@ -184,6 +191,9 @@ class NetworkService {
                     newsGroup = try JSONDecoder()
                         .decode(VKResponse<NewsGroups>.self, from: resp).response
 
+                    nextFrom = try JSONDecoder()
+                        .decode(VKResponse<NewsNextFrom>.self, from: resp).response.nextFrom
+
                 } catch {
                     print("getNews: Что-то пошло не так c JSONDecoder!", error.localizedDescription)
                 }
@@ -193,7 +203,8 @@ class NetworkService {
                 completion(NewsResponse(
                     newsItems: newsList,
                     groupItems: newsGroup,
-                    profileItems: newsProfile
+                    profileItems: newsProfile,
+                    nextFrom: nextFrom
                 ))
             }
         }
