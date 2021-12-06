@@ -101,7 +101,7 @@ enum CellType {
 
 struct NewsDataRow {
     var type: CellType
-    var photo: URL?
+    var photo: ImageItem?
     var text: String?
 }
 

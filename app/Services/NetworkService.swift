@@ -161,7 +161,7 @@ class NetworkService {
             URLQueryItem(name: "count", value: "5"),
             URLQueryItem(name: "filters", value: "post,photo,note"),
             URLQueryItem(name: "fields", value: "first_name,last_name,photo_100,photo_50,description"),
-//            URLQueryItem(name: "start_time", value: "\(NSDate().timeIntervalSince1970 + 1)"),
+            URLQueryItem(name: "start_time", value: "\(NSDate().timeIntervalSince1970 + 1)"),
         ]
 
         if startFrom != nil {

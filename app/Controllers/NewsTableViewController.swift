@@ -10,17 +10,20 @@ import UIKit
 
 class NewsTableViewController: UITableViewController {
     private var sections = [NewsSection]()
-
     private let networkService = NetworkService()
     private var pullControl = UIRefreshControl()
     private var newsNextStartQueryParam: String?
     private var isLoading = false
+    private let textCellFont = UIFont(name: "HelveticaNeue", size: 16.0)!
+    private let defaultCellHeight: CGFloat = 200
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         tableView.delegate = self
         tableView.dataSource = self
         tableView.prefetchDataSource = self
+        tableView.showsVerticalScrollIndicator = false
 
         registerNib()
         loadData()
@@ -52,7 +55,7 @@ class NewsTableViewController: UITableViewController {
 
             if let photoAttach = itemNews.attachments?[0].photo?.sizes {
                 // cell type photo
-                dataRow.append(NewsDataRow(type: .photo, photo: photoAttach.getImageByType(type: "x")?.photoUrl))
+                dataRow.append(NewsDataRow(type: .photo, photo: photoAttach.getImageByType(type: "y")))
                 isDataRowFill = true
             }
 
@@ -139,11 +142,14 @@ extension NewsTableViewController {
         switch sectionData.type {
         case .text:
             let cell = tableView.dequeueReusableCell(withIdentifier: "TextViewCell", for: indexPath) as! TextViewCell
-            cell.postTextLabel.text = sectionData.text
+            let textHeight = sectionData.text?.heightWithConstrainedWidth(width: tableView.frame.width, font: textCellFont) ?? 0
+            cell.cellInit(text: sectionData.text, isShowExpandBtn: textHeight > defaultCellHeight)
+            cell.delegate = self
             return cell
         case .photo:
             let cell = tableView.dequeueReusableCell(withIdentifier: "PhotoViewCell", for: indexPath) as! PhotoViewCell
-            if let url = sectionData.photo {
+            if let url = sectionData.photo?.photoUrl {
+                cell.postPhotoImageView.contentMode = .scaleAspectFill
                 Nuke.loadImage(
                     with: url,
                     into: cell.postPhotoImageView
@@ -154,8 +160,22 @@ extension NewsTableViewController {
         }
     }
 
-    override func tableView(_: UITableView, heightForRowAt _: IndexPath) -> CGFloat {
-        return UITableView.automaticDimension
+    // MARK: Calc cell height
+
+    override func tableView(_: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let tableWidth = tableView.bounds.width
+        let section = sections[indexPath.section]
+        let sectionData = section.data[indexPath.row]
+
+        switch sectionData.type {
+        case .photo where sectionData.photo != nil:
+            return sectionData.photo!.aspectRatio * tableWidth
+        case .text:
+            let cell = tableView.cellForRow(at: indexPath) as? TextViewCell
+            return (cell?.isExpanded ?? false) ? UITableView.automaticDimension : defaultCellHeight
+        default:
+            return UITableView.automaticDimension
+        }
     }
 
     override func tableView(_: UITableView, estimatedHeightForRowAt _: IndexPath) -> CGFloat {
@@ -233,5 +253,12 @@ extension NewsTableViewController: UITableViewDataSourcePrefetching {
             tableView.insertSections(indexSet, with: .automatic)
             self.isLoading = false
         }
+    }
+}
+
+extension NewsTableViewController: ExpandCellDelegate {
+    func moreTapped(cell _: TextViewCell) {
+        tableView.beginUpdates()
+        tableView.endUpdates()
     }
 }

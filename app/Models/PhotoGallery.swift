@@ -40,10 +40,14 @@ extension PhotoGallery {
 struct ImageItem: Codable {
     var type: String
     var url: String
+    var width: Double
+    var height: Double
 
     enum CodingKeys: String, CodingKey {
         case type
         case url
+        case width
+        case height
     }
 }
 
@@ -57,6 +61,8 @@ extension ImageItem {
         let data = try? Data(contentsOf: url)
         return UIImage(data: data!)
     }
+
+    var aspectRatio: CGFloat { width / height }
 }
 
 extension Array where Element == ImageItem {
