@@ -16,6 +16,9 @@ class GalleryCollectionViewController: UICollectionViewController {
     private var gallery: Results<RealmPhotoGallery>?
     private let realmProvider = ProviderDataService()
 
+    let sectionInset: CGFloat = 20
+    let itemsPerRow: CGFloat = 2
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -72,5 +75,27 @@ class GalleryCollectionViewController: UICollectionViewController {
 
         let indexPath = sender as! IndexPath
         sliderVc.setImages(gallery: gallery, indexAt: indexPath.row)
+    }
+}
+
+extension GalleryCollectionViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout _: UICollectionViewLayout, sizeForItemAt _: IndexPath) -> CGSize {
+        let paddingWidth = sectionInset * (itemsPerRow + 1)
+        let availWidth = collectionView.frame.width - paddingWidth
+        let widthPerItem = availWidth / itemsPerRow
+
+        return CGSize(width: widthPerItem, height: widthPerItem)
+    }
+
+    func collectionView(_: UICollectionView, layout _: UICollectionViewLayout, insetForSectionAt _: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: sectionInset, left: sectionInset, bottom: sectionInset, right: sectionInset)
+    }
+
+    func collectionView(_: UICollectionView, layout _: UICollectionViewLayout, minimumLineSpacingForSectionAt _: Int) -> CGFloat {
+        sectionInset
+    }
+
+    func collectionView(_: UICollectionView, layout _: UICollectionViewLayout, minimumInteritemSpacingForSectionAt _: Int) -> CGFloat {
+        sectionInset
     }
 }
