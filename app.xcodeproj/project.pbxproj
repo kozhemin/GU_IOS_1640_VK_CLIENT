@@ -15,6 +15,8 @@
 		9702BB3B26D58466009EC1A2 /* UITableViewController+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9702BB3A26D58466009EC1A2 /* UITableViewController+Ext.swift */; };
 		9702BB4026D6262F009EC1A2 /* Friend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9702BB3F26D6262F009EC1A2 /* Friend.swift */; };
 		9702BB4326D69E70009EC1A2 /* GalleryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9702BB4226D69E70009EC1A2 /* GalleryCollectionViewCell.swift */; };
+		974B0AC72787138900D42897 /* NetworkServiceProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974B0AC62787138900D42897 /* NetworkServiceProxy.swift */; };
+		974B0AC9278713B000D42897 /* NetworkServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974B0AC8278713B000D42897 /* NetworkServiceProtocol.swift */; };
 		97529DE82749775800B251E1 /* AsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97529DE72749775800B251E1 /* AsyncOperation.swift */; };
 		97529DEA2749792900B251E1 /* FetchDataGroupOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97529DE92749792900B251E1 /* FetchDataGroupOperation.swift */; };
 		97529DEC2749796300B251E1 /* ParseDataGroupOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97529DEB2749796300B251E1 /* ParseDataGroupOperation.swift */; };
@@ -74,6 +76,8 @@
 		9702BB3A26D58466009EC1A2 /* UITableViewController+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableViewController+Ext.swift"; sourceTree = "<group>"; };
 		9702BB3F26D6262F009EC1A2 /* Friend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Friend.swift; sourceTree = "<group>"; };
 		9702BB4226D69E70009EC1A2 /* GalleryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryCollectionViewCell.swift; sourceTree = "<group>"; };
+		974B0AC62787138900D42897 /* NetworkServiceProxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkServiceProxy.swift; sourceTree = "<group>"; };
+		974B0AC8278713B000D42897 /* NetworkServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkServiceProtocol.swift; sourceTree = "<group>"; };
 		97529DE72749775800B251E1 /* AsyncOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsyncOperation.swift; sourceTree = "<group>"; };
 		97529DE92749792900B251E1 /* FetchDataGroupOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchDataGroupOperation.swift; sourceTree = "<group>"; };
 		97529DEB2749796300B251E1 /* ParseDataGroupOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParseDataGroupOperation.swift; sourceTree = "<group>"; };
@@ -237,7 +241,9 @@
 		97764F422707C96300C17CDD /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				974B0AC8278713B000D42897 /* NetworkServiceProtocol.swift */,
 				97764F432707C97600C17CDD /* NetworkService.swift */,
+				974B0AC62787138900D42897 /* NetworkServiceProxy.swift */,
 				9775B322271A43B400210A4B /* RealmService.swift */,
 				978ED2D2271B71E300BE96A1 /* ProviderDataService.swift */,
 			);
@@ -405,6 +411,7 @@
 				97585848270C4C31001CF35A /* VKResponse.swift in Sources */,
 				9702BAC026CC78F4009EC1A2 /* FriendTableViewController.swift in Sources */,
 				97E8024D275164A400521BF4 /* FetchDataFriendPromise.swift in Sources */,
+				974B0AC9278713B000D42897 /* NetworkServiceProtocol.swift in Sources */,
 				97EA0C73275DE31F00548201 /* String+Ext.swift in Sources */,
 				978ED2DA271CA54F00BE96A1 /* RealmPhotoGallery.swift in Sources */,
 				97E9CC6426FBB2060030337B /* CusomNavigationController.swift in Sources */,
@@ -428,6 +435,7 @@
 				97CAE33B2704EB7300BC9EA1 /* AuthData.swift in Sources */,
 				97858D14270E3EB90064AD67 /* PhotoGallery.swift in Sources */,
 				9702BAC626CC79C7009EC1A2 /* GalleryCollectionViewController.swift in Sources */,
+				974B0AC72787138900D42897 /* NetworkServiceProxy.swift in Sources */,
 				9702BB3B26D58466009EC1A2 /* UITableViewController+Ext.swift in Sources */,
 				97FC942826E6C219000046BE /* UIColor+Ext.swift in Sources */,
 				9702BAC426CC794F009EC1A2 /* GroupSearchTableViewController.swift in Sources */,
