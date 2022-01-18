@@ -6,7 +6,7 @@
 //
 import UIKit
 
-class NetworkService {
+class NetworkService: NetworkServiceProtocol {
     private let session = URLSession.shared
     private var urlConstructor: URLComponents = {
         var constructor = URLComponents()

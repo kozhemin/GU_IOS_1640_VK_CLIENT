@@ -10,7 +10,7 @@ import UIKit
 
 class NewsTableViewController: UITableViewController {
     private var sections = [NewsSection]()
-    private let networkService = NetworkService()
+    private let networkService = NetworkServiceProxy(NetworkService())
     private var pullControl = UIRefreshControl()
     private var newsNextStartQueryParam: String?
     private var isLoading = false
